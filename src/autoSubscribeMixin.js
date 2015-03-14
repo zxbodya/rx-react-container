@@ -1,3 +1,5 @@
+'use strict';
+
 var createObserver = (context, stateKey) => {
   return value => {
     var partialState = {};
@@ -8,27 +10,26 @@ var createObserver = (context, stateKey) => {
 
 var autoSubscribeMixin = (autoSubscribeProps)=> {
   function updateSubscriptions(context, props, nextProps) {
-    var partialState = {};
-    var stateUpdated = false;
-
+    var partialState;
     for (var key in autoSubscribeProps) {
       var prop = nextProps[key];
       if (prop !== props[key]) {
-        stateUpdated = true;
         if (key in context._autoSubscribeObs) {
           context._autoSubscribeObs[key].dispose();
         }
         var conf = autoSubscribeProps[key];
+        var stateKey = conf[0];
         if (prop.subscribe) {
-          partialState[conf[0]] = conf[1];
-          context._autoSubscribeObs[key] = prop.subscribe(createObserver(context, conf[0]));
+          partialState = {};
+          partialState[stateKey] = conf[1];
+          context.setState(partialState);
+          context._autoSubscribeObs[key] = prop.subscribe(createObserver(context, stateKey));
         } else {
-          partialState[conf[0]] = prop;
+          partialState = {};
+          partialState[stateKey] = prop;
+          context.setState(partialState);
         }
       }
-    }
-    if (stateUpdated) {
-      context.setState(partialState);
     }
   }
 
