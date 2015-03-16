@@ -7,7 +7,7 @@ var createObserver = (context, stateKey) => {
     context.setState(partialState);
   }
 };
-
+/** @deprecated */
 var autoSubscribeMixin = (autoSubscribeProps)=> {
   function updateSubscriptions(context, props, nextProps) {
     var partialState;
