@@ -1,20 +1,17 @@
 'use strict';
 
-let Rx = require('rx');
-let React = require('react');
-
+const React = require('react');
 
 const objectObserver = require('./observableObject');
 
 function createRxComponent(Element, observables = {}, observers = {}, props = {}) {
 
-  var propsObservable = objectObserver(observables);
+  const propsObservable = objectObserver(observables);
 
-  var callbacks = {};
+  const callbacks = {};
 
   Object.keys(observers).forEach(key=> {
-    var observer = observers[key];
-    callbacks[key] = (value)=>observer.onNext(value);
+    callbacks[key] = (value)=>observers[key].onNext(value);
   });
 
   return propsObservable.map((state)=> {
