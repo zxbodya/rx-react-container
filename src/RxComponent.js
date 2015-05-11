@@ -8,10 +8,6 @@ const objectObserver = require('./observableObject');
 
 function createProxyComponent(Component, observable, initialState) {
   class RxProxy extends React.Component {
-    constructor(props, context) {
-      super(props, context);
-    }
-
     componentWillMount() {
       this.setState(initialState);
     }
