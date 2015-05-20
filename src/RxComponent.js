@@ -81,6 +81,21 @@ class RxComponent extends AnonymousObservable {
       props && Object.assign({}, prevProps, props)
     );
   }
+
+  /**
+   * Extend defined params
+   * @param {function} decorator
+   * @returns {RxComponent}
+   */
+  decorate(decorator) {
+    const [Component, observables, observers, props] = this.params;
+    return new RxComponent(
+      decorator(Component),
+      observables,
+      observers,
+      props
+    );
+  }
 }
 
 module.exports = RxComponent;
