@@ -52,13 +52,11 @@ class RxComponent extends AnonymousObservable {
 
       const initialState = {};
       const Proxy = createProxyComponent(Component, propsObservable, initialState);
-      const proxyElement = (
-        <Proxy {...props} {...callbacks}/>
-      );
+      Proxy.defaultProps = Object.assign({}, props, callbacks);
 
       return propsObservable
         .do(state=>Object.assign(initialState, state))
-        .map(()=>proxyElement)
+        .map(()=>Proxy)
         .subscribe(observer);
     });
 
@@ -84,7 +82,7 @@ class RxComponent extends AnonymousObservable {
 
   /**
    * Extend defined params
-   * @param {function} decorator
+   * @param {function(component: React.Component): React.Component} decorator
    * @returns {RxComponent}
    */
   decorate(decorator) {
