@@ -1,10 +1,7 @@
-'use strict';
+import React from 'react';
+import Rx, {AnonymousObservable} from 'rx';
 
-const React = require('react');
-const Rx = require('rx');
-const {AnonymousObservable} = Rx;
-
-const objectObserver = require('./observableObject');
+import objectObserver from './observableObject';
 
 function createProxyComponent(Component, observable, initialState) {
   class RxProxy extends React.Component {
@@ -96,4 +93,4 @@ class RxComponent extends AnonymousObservable {
   }
 }
 
-module.exports = RxComponent;
+export default RxComponent;

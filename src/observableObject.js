@@ -1,6 +1,4 @@
-'use strict';
-
-const {Observable} = require('rx');
+import {Observable} from 'rx';
 
 function observableObject(observables) {
   const keys = Object.keys(observables);
@@ -23,4 +21,4 @@ function observableObject(observables) {
   });
 }
 
-module.exports = observableObject;
+export default observableObject;
