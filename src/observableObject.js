@@ -1,6 +1,6 @@
 import {Observable} from 'rx';
 
-function observableObject(observables) {
+export default function observableObject(observables) {
   const keys = Object.keys(observables);
 
   if (keys.length === 0) {
@@ -13,12 +13,10 @@ function observableObject(observables) {
   }
 
   return Observable.combineLatest(valueObservables, (...values)=> {
-    let res = {};
+    const res = {};
     for (let i = 0, l = keys.length; i < l; i++) {
       res[keys[i]] = values[i];
     }
     return res;
   });
 }
-
-export default observableObject;

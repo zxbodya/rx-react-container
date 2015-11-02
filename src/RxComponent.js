@@ -1,5 +1,6 @@
 import React from 'react';
-import Rx, {AnonymousObservable} from 'rx';
+
+import {AnonymousObservable} from 'rx';
 
 import objectObserver from './observableObject';
 
