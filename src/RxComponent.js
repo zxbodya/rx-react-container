@@ -4,28 +4,41 @@ import {AnonymousObservable} from 'rx';
 
 import objectObserver from './observableObject';
 
-function createProxyComponent(Component, observable, initialState) {
-  class RxProxy extends React.Component {
-    componentWillMount() {
-      this.setState(initialState);
-    }
-
-    componentDidMount() {
-      this.subscribtion = observable.subscribe((state)=> {
-        this.setState(state);
-      });
-    }
-
-    componentWillUnmount() {
-      this.subscribtion.dispose();
-    }
-
-    render() {
-      return (<Component {...this.props} {...this.state}/>);
-    }
+class RxController extends React.Component {
+  constructor(props) {
+    super();
+    this.state = props.initialState;
   }
-  return RxProxy;
+
+  componentDidMount() {
+    this.subscribtion = this.props.observable.subscribe((state)=> {
+      this.setState(state);
+    });
+  }
+
+  componentWillUnmount() {
+    this.subscribtion.dispose();
+  }
+
+  render() {
+    const Component = this.props.component;
+    return (
+      <Component
+        {...this.props.props}
+        {...this.props.callbacks}
+        {...this.state}
+      />
+    );
+  }
 }
+
+RxController.propTypes = {
+  component: React.PropTypes.func,
+  observable: React.PropTypes.object,
+  initialState: React.PropTypes.object,
+  props: React.PropTypes.object,
+  callbacks: React.PropTypes.object
+};
 
 /**
  * Creates observable form ready to render ReactElements.
@@ -49,12 +62,26 @@ class RxComponent extends AnonymousObservable {
       const propsObservable = objectObserver(observables).share();
 
       const initialState = {};
-      const Proxy = createProxyComponent(Component, propsObservable, initialState);
-      Proxy.defaultProps = Object.assign({}, props, callbacks);
+      const renderProps = {
+        props: props,
+        callbacks: callbacks,
+        component: Component,
+        observable: propsObservable,
+        initialState: initialState
+      };
+
+      const renderFn = function () {
+        return (
+          <RxController {...renderProps}/>
+        );
+      };
+
+      renderFn.component = RxController;
+      renderFn.props = renderProps;
 
       return propsObservable
         .do(state=>Object.assign(initialState, state))
-        .map(()=>Proxy)
+        .map(()=>renderFn)
         .subscribe(observer);
     });
 
