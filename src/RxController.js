@@ -33,7 +33,7 @@ RxController.propTypes = {
   observable: React.PropTypes.object,
   initialState: React.PropTypes.object,
   props: React.PropTypes.object,
-  callbacks: React.PropTypes.object
+  callbacks: React.PropTypes.object,
 };
 
 export default RxController;

@@ -4,7 +4,7 @@ import {AnonymousObservable} from 'rx';
 
 import objectObserver from './observableObject';
 
-import RxController from './RxController'
+import RxController from './RxController';
 
 /**
  * Creates observable form ready to render ReactElements.
@@ -33,14 +33,10 @@ class RxComponent extends AnonymousObservable {
         callbacks: callbacks,
         component: Component,
         observable: propsObservable,
-        initialState: initialState
+        initialState: initialState,
       };
 
-      const renderFn = function () {
-        return (
-          <RxController {...renderProps}/>
-        );
-      };
+      const renderFn = ()=> <RxController {...renderProps}/>;
 
       renderFn.component = RxController;
       renderFn.props = renderProps;
