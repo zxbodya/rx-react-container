@@ -4,41 +4,7 @@ import {AnonymousObservable} from 'rx';
 
 import objectObserver from './observableObject';
 
-class RxController extends React.Component {
-  constructor(props) {
-    super();
-    this.state = props.initialState;
-  }
-
-  componentDidMount() {
-    this.subscribtion = this.props.observable.subscribe((state)=> {
-      this.setState(state);
-    });
-  }
-
-  componentWillUnmount() {
-    this.subscribtion.dispose();
-  }
-
-  render() {
-    const Component = this.props.component;
-    return (
-      <Component
-        {...this.props.props}
-        {...this.props.callbacks}
-        {...this.state}
-      />
-    );
-  }
-}
-
-RxController.propTypes = {
-  component: React.PropTypes.func,
-  observable: React.PropTypes.object,
-  initialState: React.PropTypes.object,
-  props: React.PropTypes.object,
-  callbacks: React.PropTypes.object
-};
+import RxController from './RxController'
 
 /**
  * Creates observable form ready to render ReactElements.
@@ -82,6 +48,7 @@ class RxComponent extends AnonymousObservable {
       return propsObservable
         .do(state=>Object.assign(initialState, state))
         .map(()=>renderFn)
+        .distinctUntilChanged()
         .subscribe(observer);
     });
 
