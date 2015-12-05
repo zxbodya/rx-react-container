@@ -1,6 +1,6 @@
 import React from 'react';
 
-import {AnonymousObservable} from 'rx';
+import {AnonymousObservable, Observable} from 'rx';
 
 import combineLatestObj from 'rx-combine-latest-obj';
 
@@ -25,7 +25,9 @@ class RxContainer extends AnonymousObservable {
         callbacks[key] = (value)=>observers[key].onNext(value);
       });
 
-      const propsObservable = combineLatestObj(observables).share();
+      const propsObservable = Object.keys({}).length === 0
+        ? Observable.return({})
+        : combineLatestObj(observables).share();
 
       const initialState = {};
       const renderProps = {
@@ -36,9 +38,9 @@ class RxContainer extends AnonymousObservable {
         initialState: initialState,
       };
 
-      const renderFn = ()=> <RxController {...renderProps}/>;
+      const renderFn = ()=> <RxContainerController {...renderProps}/>;
 
-      renderFn.component = RxController;
+      renderFn.component = RxContainerController;
       renderFn.props = renderProps;
 
       return propsObservable
