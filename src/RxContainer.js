@@ -25,7 +25,7 @@ class RxContainer extends AnonymousObservable {
         callbacks[key] = (value)=>observers[key].onNext(value);
       });
 
-      const propsObservable = Object.keys({}).length === 0
+      const propsObservable = Object.keys(observables).length === 0
         ? Observable.return({})
         : combineLatestObj(observables).share();
 
