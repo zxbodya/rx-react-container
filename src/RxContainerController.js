@@ -4,6 +4,7 @@ class RxContainerController extends React.Component {
   constructor(props) {
     super();
     this.state = props.initialState;
+    this.subscribtion = null;
   }
 
   componentDidMount() {
