@@ -12,6 +12,16 @@ class RxController extends React.Component {
     });
   }
 
+  componentWillReceiveProps(props) {
+    if (props.observable !== this.props.observable) {
+      this.subscribtion.dispose();
+      this.setState(props.initialState);
+      this.subscribtion = this.props.observable.subscribe((state)=> {
+        this.setState(state);
+      });
+    }
+  }
+
   componentWillUnmount() {
     this.subscribtion.dispose();
   }
