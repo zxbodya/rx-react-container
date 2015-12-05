@@ -1,0 +1,37 @@
+{
+  "name": "rx-react-container",
+  "version": "0.0.1",
+  "author": "Bogdan Savluk <savluk.bogdan@gmail.com>",
+  "description": "Container to connects React components to Observables and observers",
+  "keywords": [
+    "react",
+    "rx",
+    "container",
+    "isomorpic"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/zxbodya/rx-react-container"
+  },
+  "license": "MIT",
+  "engines": {
+    "node": ">=0.12.0"
+  },
+  "main": "lib.js",
+  "jsnext:main": "src.js",
+  "scripts": {
+    "lint": "eslint ./src/",
+    "prepublish": "babel --optional runtime src --out-dir lib"
+  },
+  "devDependencies": {
+    "babel": "^5.6.14",
+    "babel-core": "^5.8.29",
+    "babel-eslint": "^4.1.5",
+    "eslint": "^1.9.0",
+    "eslint-config-airbnb": "^1.0.0",
+    "eslint-plugin-react": "^3.8.0"
+  },
+  "dependencies": {
+    "babel-runtime": "^5.8.29"
+  }
+}
