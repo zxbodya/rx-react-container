@@ -1,6 +1,6 @@
 import React from 'react';
 
-class RxController extends React.Component {
+class RxContainerController extends React.Component {
   constructor(props) {
     super();
     this.state = props.initialState;
@@ -38,7 +38,7 @@ class RxController extends React.Component {
   }
 }
 
-RxController.propTypes = {
+RxContainerController.propTypes = {
   component: React.PropTypes.func,
   observable: React.PropTypes.object,
   initialState: React.PropTypes.object,
@@ -46,4 +46,4 @@ RxController.propTypes = {
   callbacks: React.PropTypes.object,
 };
 
-export default RxController;
+export default RxContainerController;

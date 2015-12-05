@@ -4,13 +4,13 @@ import {AnonymousObservable} from 'rx';
 
 import combineLatestObj from 'rx-combine-latest-obj';
 
-import RxController from './RxController';
+import RxContainerController from './RxContainerController';
 
 /**
  * Creates observable form ready to render ReactElements.
  * The same ReactElement would be emitted on every observables combination.
  */
-class RxComponent extends AnonymousObservable {
+class RxContainer extends AnonymousObservable {
   /**
    * @param {React.Component} Component
    * @param {Object.<string, Rx.Observable>=} observables
@@ -56,11 +56,11 @@ class RxComponent extends AnonymousObservable {
    * @param {Object.<string, Rx.Observable>=} observables
    * @param {Object.<string, Rx.Observer>=} observers
    * @param {Object=} props
-   * @returns {RxComponent}
+   * @returns {RxContainer}
    */
   extend(observables, observers, props) {
     const [Component, prevObservables, prevObservers, prevProps] = this.params;
-    return new RxComponent(
+    return new RxContainer(
       Component,
       observables && Object.assign({}, prevObservables, observables),
       observers && Object.assign({}, prevObservers, observers),
@@ -71,11 +71,11 @@ class RxComponent extends AnonymousObservable {
   /**
    * Extend defined params
    * @param {function(component: React.Component): React.Component} decorator
-   * @returns {RxComponent}
+   * @returns {RxContainer}
    */
   decorate(decorator) {
     const [Component, observables, observers, props] = this.params;
-    return new RxComponent(
+    return new RxContainer(
       decorator(Component),
       observables,
       observers,
@@ -84,4 +84,4 @@ class RxComponent extends AnonymousObservable {
   }
 }
 
-export default RxComponent;
+export default RxContainer;
