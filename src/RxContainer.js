@@ -40,49 +40,12 @@ class RxContainer extends AnonymousObservable {
 
       const renderFn = ()=> <RxContainerController {...renderProps}/>;
 
-      renderFn.component = RxContainerController;
-      renderFn.props = renderProps;
-
       return propsObservable
         .do(state=>Object.assign(initialState, state))
         .map(()=>renderFn)
         .distinctUntilChanged()
         .subscribe(observer);
     });
-
-    this.params = [Component, observables, observers, props];
-  }
-
-  /**
-   * Extend defined params
-   * @param {Object.<string, Rx.Observable>=} observables
-   * @param {Object.<string, Rx.Observer>=} observers
-   * @param {Object=} props
-   * @returns {RxContainer}
-   */
-  extend(observables, observers, props) {
-    const [Component, prevObservables, prevObservers, prevProps] = this.params;
-    return new RxContainer(
-      Component,
-      observables && Object.assign({}, prevObservables, observables),
-      observers && Object.assign({}, prevObservers, observers),
-      props && Object.assign({}, prevProps, props)
-    );
-  }
-
-  /**
-   * Extend defined params
-   * @param {function(component: React.Component): React.Component} decorator
-   * @returns {RxContainer}
-   */
-  decorate(decorator) {
-    const [Component, observables, observers, props] = this.params;
-    return new RxContainer(
-      decorator(Component),
-      observables,
-      observers,
-      props
-    );
   }
 }
 

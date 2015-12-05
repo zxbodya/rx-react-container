@@ -7,7 +7,7 @@
     "react",
     "rx",
     "container",
-    "isomorpic"
+    "isomorphic"
   ],
   "repository": {
     "type": "git",
@@ -21,7 +21,8 @@
   "jsnext:main": "src/RcContainer.js",
   "scripts": {
     "lint": "eslint ./src/",
-    "prepublish": "babel --optional runtime src --out-dir lib"
+    "build": "rimraf lib && babel --optional runtime src --out-dir lib",
+    "prepublish": "npm run build"
   },
   "devDependencies": {
     "babel": "^5.6.14",
@@ -29,7 +30,8 @@
     "babel-eslint": "^4.1.5",
     "eslint": "^1.9.0",
     "eslint-config-airbnb": "^1.0.0",
-    "eslint-plugin-react": "^3.8.0"
+    "eslint-plugin-react": "^3.8.0",
+    "rimraf": "^2.4.4"
   },
   "dependencies": {
     "babel-runtime": "^5.8.29",
