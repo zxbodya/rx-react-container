@@ -32,6 +32,8 @@
     "eslint-plugin-react": "^3.8.0"
   },
   "dependencies": {
-    "babel-runtime": "^5.8.29"
+    "babel-runtime": "^5.8.29",
+    "rx": "^4.0.7",
+    "rx-combine-latest-obj": "^1.0.2"
   }
 }

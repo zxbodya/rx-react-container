@@ -2,7 +2,7 @@ import React from 'react';
 
 import {AnonymousObservable} from 'rx';
 
-import objectObserver from './observableObject';
+import combineLatestObj from 'rx-combine-latest-obj';
 
 import RxController from './RxController';
 
@@ -25,7 +25,7 @@ class RxComponent extends AnonymousObservable {
         callbacks[key] = (value)=>observers[key].onNext(value);
       });
 
-      const propsObservable = objectObserver(observables).share();
+      const propsObservable = combineLatestObj(observables).share();
 
       const initialState = {};
       const renderProps = {
