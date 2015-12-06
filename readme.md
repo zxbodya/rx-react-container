@@ -1,11 +1,20 @@
-## React Rx Container 
+## Rx React Container 
 
-Container to connect React components to Observables and observers.
+Allows to use React as a view layer for RxJS application, and to wait for required data before first rendering. 
 
-It allows to easily connect React as a view layer for your rx application.
+Works by wrapping React Component into container that:
 
-Also it is super useful when doing isomorphic apps.
+ * passes data form observables
+ * connects component to observers via callbacks
 
+Also it is super useful when doing isomorphic apps - it allows to wait for data before first render(actually it was one of my biggest reasons to make this library).
+
+If you are interested in history of this library - look at [gist about it](https://gist.github.com/zxbodya/20c63681d45a049df3fc).
+
+### Installation
+
+`npm install rx-react-container --save`
+ 
 ### Documentation
 
 Module exports function:

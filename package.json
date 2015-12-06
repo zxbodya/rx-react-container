@@ -1,8 +1,8 @@
 {
   "name": "rx-react-container",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "author": "Bogdan Savluk <savluk.bogdan@gmail.com>",
-  "description": "Connects observables and observers to react components",
+  "description": "Allows to use React as a view layer for RxJS application, and to wait for required data before first rendering.",
   "keywords": [
     "react",
     "rx",
