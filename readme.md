@@ -11,6 +11,8 @@ Also it is super useful when doing isomorphic apps - it allows to wait for data 
 
 If you are interested in history of this library - look at [gist about it](https://gist.github.com/zxbodya/20c63681d45a049df3fc).
 
+First place where it is already used is my [reactive-widgets](https://github.com/zxbodya/reactive-widgets) project.
+
 ### Installation
 
 `npm install rx-react-container --save`
