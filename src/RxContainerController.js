@@ -17,7 +17,7 @@ class RxContainerController extends React.Component {
     if (props.observable !== this.props.observable) {
       this.subscribtion.dispose();
       this.setState(props.initialState);
-      this.subscribtion = this.props.observable.subscribe((state)=> {
+      this.subscribtion = props.observable.subscribe((state)=> {
         this.setState(state);
       });
     }
