@@ -3,22 +3,22 @@ import React from 'react';
 class RxContainerController extends React.Component {
   constructor(props) {
     super();
-    this.state = props.initialState;
+    this.state = { props: props.initialState };
     this.subscribtion = null;
   }
 
   componentDidMount() {
-    this.subscribtion = this.props.observable.subscribe((state)=> {
-      this.setState(state);
+    this.subscribtion = this.props.observable.subscribe(props => {
+      this.setState({ props });
     });
   }
 
-  componentWillReceiveProps(props) {
-    if (props.observable !== this.props.observable) {
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.observable !== this.props.observable) {
       this.subscribtion.dispose();
-      this.setState(props.initialState);
-      this.subscribtion = props.observable.subscribe((state)=> {
-        this.setState(state);
+      this.setState({ props: nextProps.initialState });
+      this.subscribtion = nextProps.observable.subscribe(props => {
+        this.setState({ props });
       });
     }
   }
@@ -33,7 +33,7 @@ class RxContainerController extends React.Component {
       <Component
         {...this.props.props}
         {...this.props.callbacks}
-        {...this.state}
+        {...this.state.props}
       />
     );
   }
