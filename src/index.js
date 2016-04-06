@@ -1,6 +1,6 @@
 import React from 'react';
 
-import {AnonymousObservable, Observable} from 'rx';
+import { AnonymousObservable, Observable } from 'rx';
 
 import combineLatestObj from 'rx-combine-latest-obj';
 
@@ -15,11 +15,11 @@ import RxContainerController from './RxContainerController';
  * @param {Object=} props
  */
 function createContainer(Component, observables = {}, observers = {}, props = {}) {
-  return new AnonymousObservable(observer=> {
+  return new AnonymousObservable(observer => {
     const callbacks = {};
 
-    Object.keys(observers).forEach(key=> {
-      callbacks[key.replace(/\$$/, '')] = (value)=>observers[key].onNext(value);
+    Object.keys(observers).forEach(key => {
+      callbacks[key.replace(/\$$/, '')] = value => observers[key].onNext(value);
     });
 
     const propsObservable = Object.keys(observables).length === 0
@@ -28,18 +28,18 @@ function createContainer(Component, observables = {}, observers = {}, props = {}
 
     const initialState = {};
     const renderProps = {
-      props: props,
-      callbacks: callbacks,
+      props,
+      callbacks,
+      initialState,
       component: Component,
       observable: propsObservable,
-      initialState: initialState,
     };
 
-    const renderFn = ()=> <RxContainerController {...renderProps}/>;
+    const renderFn = () => <RxContainerController {...renderProps} />;
 
     return propsObservable
-      .do(state=>Object.assign(initialState, state))
-      .map(()=>renderFn)
+      .do(state => Object.assign(initialState, state))
+      .map(() => renderFn)
       .distinctUntilChanged()
       .subscribe(observer);
   });
