@@ -49,13 +49,13 @@ import {render} from 'react-dom';
 import {Subject, Observable} from 'rx';
 import createContainer from 'rx-react-container';
 
-const plusOne = new Subject();
-const minusOne = new Subject();
+const plusOne$ = new Subject();
+const minusOne$ = new Subject();
 
-const totalCount = Observable
+const totalCount$ = Observable
   .merge(
-    plusOne.map(() => +1),
-    minusOne.map(() => -1)
+    plusOne$.map(() => +1),
+    minusOne$.map(() => -1)
   )
   .startWith(0)
   .scan((acc, x) => acc + x, 0);
@@ -70,10 +70,10 @@ const App = ({plusOne, minusOne, totalCount}) => {
   );
 };
 
-const app = createContainer(App, {totalCount}, {plusOne, minusOne});
+const app$ = createContainer(App, {totalCount$}, {plusOne$, minusOne$});
 
 const appElement = document.getElementById('app');
 
-app.forEach(renderApp=>render(renderApp(), appElement));
+app$.forEach(renderApp=>render(renderApp(), appElement));
 
 ```
