@@ -1,5 +1,7 @@
 ## Rx React Container 
 
+[![Build Status](https://travis-ci.org/zxbodya/rx-react-container.svg?branch=master)](https://travis-ci.org/zxbodya/rx-react-container)
+
 Allows to use React as a view layer for RxJS application, and to wait for required data before first rendering. 
 
 Works by wrapping React Component into container that:
