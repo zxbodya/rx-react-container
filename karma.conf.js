@@ -79,6 +79,11 @@ module.exports = function (config) {
         ],
       },
       devtool: 'inline-source-map',
+      externals: {
+        cheerio: 'window',
+        'react/lib/ExecutionEnvironment': true,
+        'react/lib/ReactContext': true,
+      },
     },
 
     webpackMiddleware: {
