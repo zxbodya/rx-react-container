@@ -9,6 +9,7 @@
   "rules": {
     "jsx-no-bind": 0,
     "react/jsx-no-bind": 0,
+    "react/prop-types": 1,
     "prefer-template": 1,
     "prefer-arrow-callback": 1,
     "max-len": 1
