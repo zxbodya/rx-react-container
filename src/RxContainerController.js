@@ -4,27 +4,27 @@ class RxContainerController extends React.Component {
   constructor(props) {
     super();
     this.state = { props: props.initialState };
-    this.subscribtion = null;
+    this.subscription = null;
   }
 
   componentDidMount() {
-    this.subscribtion = this.props.observable.subscribe(props => {
+    this.subscription = this.props.observable.subscribe(props => {
       this.setState({ props });
     });
   }
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.observable !== this.props.observable) {
-      this.subscribtion.dispose();
+      this.subscription.dispose();
       this.setState({ props: nextProps.initialState });
-      this.subscribtion = nextProps.observable.subscribe(props => {
+      this.subscription = nextProps.observable.subscribe(props => {
         this.setState({ props });
       });
     }
   }
 
   componentWillUnmount() {
-    this.subscribtion.dispose();
+    this.subscription.dispose();
   }
 
   render() {
