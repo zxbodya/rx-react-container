@@ -3,6 +3,26 @@ import { mount } from 'enzyme';
 import { Subject, Observable } from 'rx';
 import createContainer from './index';
 
+function StaticView() {
+  return <div id="root">Hello</div>;
+}
+
+function App({ plusOne, minusOne, totalCount }) {
+  return (
+    <div>
+      <button onClick={minusOne} id="minus">-</button>
+      [<span id="count">{totalCount}</span>]
+      <button onClick={plusOne} id="plus">+</button>
+    </div>
+  );
+}
+
+App.propTypes = {
+  plusOne: React.PropTypes.any,
+  minusOne: React.PropTypes.any,
+  totalCount: React.PropTypes.any,
+};
+
 function createSampleContainer() {
   const plusOne$ = new Subject();
   const minusOne$ = new Subject();
@@ -15,27 +35,22 @@ function createSampleContainer() {
     .startWith(0)
     .scan((acc, x) => acc + x, 0);
 
-  function App({ plusOne, minusOne, totalCount }) {
-    return (
-      <div>
-        <button onClick={minusOne} id="minus">-</button>
-        [<span id="count">{totalCount}</span>]
-        <button onClick={plusOne} id="plus">+</button>
-      </div>
-    );
-  }
-
-  App.propTypes = {
-    plusOne: React.PropTypes.any,
-    minusOne: React.PropTypes.any,
-    totalCount: React.PropTypes.any,
-  };
-
   return createContainer(App, { totalCount$ }, { plusOne$, minusOne$ });
 }
 
-describe('rx-react-container', () => {
-  it('it works', (done) => {
+describe('createContainer', () => {
+  it('renders static view', (done) => {
+    createContainer(StaticView)
+      .first()
+      .forEach(renderApp => {
+        const wrapper = mount(renderApp());
+        expect(wrapper.find('#root').text()).toBe('Hello');
+        wrapper.unmount();
+        done();
+      });
+  });
+
+  it('works', (done) => {
     createSampleContainer()
       .first()
       .forEach(renderApp => {
@@ -53,6 +68,7 @@ describe('rx-react-container', () => {
               wrapper.find('#minus').simulate('click');
               setTimeout(() => {
                 expect(wrapper.find('#count').text()).toBe('1');
+                wrapper.unmount();
                 done();
               }, 10);
             }, 10);
