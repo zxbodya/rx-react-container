@@ -25,6 +25,12 @@ function createSampleContainer() {
     );
   }
 
+  App.propTypes = {
+    plusOne: React.PropTypes.any,
+    minusOne: React.PropTypes.any,
+    totalCount: React.PropTypes.any,
+  };
+
   return createContainer(App, { totalCount$ }, { plusOne$, minusOne$ });
 }
 

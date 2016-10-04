@@ -7,11 +7,29 @@
     "node": true
   },
   "rules": {
+    "import/no-unresolved": 1,
+    "global-require": 0,
     "jsx-no-bind": 0,
     "react/jsx-no-bind": 0,
-    "react/prop-types": 1,
     "prefer-template": 1,
-    "prefer-arrow-callback": 1,
-    "max-len": 1
+    "max-len": [
+      "error",
+      120
+    ],
+    "new-cap": 0,
+    "react/prefer-stateless-function": 0,
+    "no-param-reassign": 1,
+    "consistent-return": 1,
+    "react/jsx-filename-extension": 0,
+    "import/prefer-default-export": 0,
+    "import/no-extraneous-dependencies": 0,
+    "no-mixed-operators": [
+      "error",
+      {
+        "allowSamePrecedence": true
+      }
+    ],
+    "arrow-parens": 0,
+    "react/forbid-prop-types": 0
   }
 }
