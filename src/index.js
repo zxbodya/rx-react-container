@@ -15,30 +15,35 @@ import RxContainerController from './RxContainerController';
  * @param {Object=} props
  */
 function createContainer(Component, observables = {}, observers = {}, props = {}) {
+  const callbacks = {};
+
+  Object.keys(observers).forEach(key => {
+    callbacks[key.replace(/\$$/, '')] = value => {
+      observers[key].onNext(value);
+    };
+  });
+
   return new AnonymousObservable(observer => {
-    const callbacks = {};
-
-    Object.keys(observers).forEach(key => {
-      callbacks[key.replace(/\$$/, '')] = value => observers[key].onNext(value);
-    });
-
     const propsObservable = Object.keys(observables).length === 0
       ? Observable.return({})
       : combineLatestObj(observables).share();
 
     const initialState = {};
-    const renderProps = {
-      props,
-      callbacks,
-      initialState,
-      component: Component,
-      observable: propsObservable,
-    };
 
-    const renderFn = () => <RxContainerController {...renderProps} />;
+    const renderFn = () => (
+      <RxContainerController
+        props={props}
+        callbacks={callbacks}
+        initialState={initialState}
+        component={Component}
+        observable={propsObservable}
+      />
+    );
 
     return propsObservable
-      .do(state => Object.assign(initialState, state))
+      .do(state => {
+        Object.assign(initialState, state);
+      })
       .map(() => renderFn)
       .distinctUntilChanged()
       .subscribe(observer);
