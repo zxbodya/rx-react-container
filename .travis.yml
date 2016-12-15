@@ -10,10 +10,10 @@ cache:
     - node_modules
 
 install:
-  - yarn install
+  - npm install
 
 script:
-  - yarn lint && yarn cover
+  - npm run lint && npm run cover
 
 after_success:
   - cat ./coverage/coverage-final.json | ./node_modules/codecov.io/bin/codecov.io.js
