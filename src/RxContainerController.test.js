@@ -1,6 +1,6 @@
 import React from 'react';
 import { mount } from 'enzyme';
-import { Observable } from 'rx';
+import { Observable } from 'rxjs';
 import RxContainerController from './RxContainerController';
 
 function StaticView() {
@@ -16,7 +16,7 @@ describe('RxContainerController', () => {
       component={StaticView}
       observable={Observable.create(o => {
         subscribeCount += 1;
-        o.onNext({});
+        o.next({});
         return () => {
           disposeCount += 1;
         };
@@ -40,7 +40,7 @@ describe('RxContainerController', () => {
   });
 
   it('creates new subscription on render with different observable', () => {
-    wrapper.setProps({ observable: Observable.return({}) });
+    wrapper.setProps({ observable: Observable.of({}) });
     expect(subscribeCount).toBe(1);
     expect(disposeCount).toBe(1);
   });

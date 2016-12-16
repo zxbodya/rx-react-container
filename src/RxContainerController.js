@@ -15,7 +15,7 @@ class RxContainerController extends React.Component {
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.observable !== this.props.observable) {
-      this.subscription.dispose();
+      this.subscription.unsubscribe();
       this.setState({ props: nextProps.initialState });
       this.subscription = nextProps.observable.subscribe(props => {
         this.setState({ props });
@@ -24,7 +24,7 @@ class RxContainerController extends React.Component {
   }
 
   componentWillUnmount() {
-    this.subscription.dispose();
+    this.subscription.unsubscribe();
   }
 
   render() {

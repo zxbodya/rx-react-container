@@ -1,6 +1,6 @@
 import React from 'react';
 import { mount } from 'enzyme';
-import { Subject, Observable } from 'rx';
+import { Subject, Observable } from 'rxjs';
 import createContainer from './index';
 
 function StaticView() {

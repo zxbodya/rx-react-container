@@ -1,8 +1,8 @@
 import React from 'react';
 
-import { AnonymousObservable, Observable } from 'rx';
+import { Observable } from 'rxjs';
 
-import combineLatestObj from 'rx-combine-latest-obj';
+import { combineLatestObj } from './combineLatestObj';
 
 import RxContainerController from './RxContainerController';
 
@@ -10,8 +10,8 @@ import RxContainerController from './RxContainerController';
  * Creates observable of functions that will create react virtual dom.
  *
  * @param {React.Component} Component
- * @param {Object.<string, Rx.Observable>=} observables
- * @param {Object.<string, Rx.Observer>=} observers
+ * @param {Object.<string, Observable>=} observables
+ * @param {Object.<string, Observer>=} observers
  * @param {Object=} props
  */
 function createContainer(Component, observables = {}, observers = {}, props = {}) {
@@ -19,13 +19,13 @@ function createContainer(Component, observables = {}, observers = {}, props = {}
 
   Object.keys(observers).forEach(key => {
     callbacks[key.replace(/\$$/, '')] = value => {
-      observers[key].onNext(value);
+      observers[key].next(value);
     };
   });
 
-  return new AnonymousObservable(observer => {
+  return Observable.defer(() => {
     const propsObservable = Object.keys(observables).length === 0
-      ? Observable.return({})
+      ? Observable.of([{}])
       : combineLatestObj(observables).share();
 
     const initialState = {};
@@ -44,9 +44,8 @@ function createContainer(Component, observables = {}, observers = {}, props = {}
       .do(state => {
         Object.assign(initialState, state);
       })
-      .map(() => renderFn)
-      .distinctUntilChanged()
-      .subscribe(observer);
+      .mapTo(renderFn)
+      .distinctUntilChanged();
   });
 }
 
