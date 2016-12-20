@@ -10,7 +10,7 @@ Works by wrapping React Component into container that:
  * passes data form observables
  * connects component to observers via callbacks
 
-Also it is super useful when doing isomorphic apps - it allows to wait for data before first render(actually it was one of my biggest reasons to make this library).
+Also it is super useful when doing isomorphic apps - it allows to wait for data before first render(actually it was one of my biggest reasons to make this).
 
 If you are interested in history of this library - look at [gist about it](https://gist.github.com/zxbodya/20c63681d45a049df3fc).
 
@@ -19,6 +19,8 @@ First place where it is already used is my [reactive-widgets](https://github.com
 ### Installation
 
 `npm install rx-react-container --save`
+
+(If you are looking for RxJS 4 version - see version 0.1.4)
  
 ### Documentation
 
@@ -49,7 +51,7 @@ Also container will correctly dispose subscription to observables when unmounted
 import React from 'react';
 import {render} from 'react-dom';
 
-import {Subject, Observable} from 'rx';
+import {Subject, Observable} from 'rxjs';
 import createContainer from 'rx-react-container';
 
 const plusOne$ = new Subject();

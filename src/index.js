@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 
 import { combineLatestObj } from './combineLatestObj';
 
-import RxContainerController from './RxContainerController';
+import { RxContainer } from './RxContainer';
 
 /**
  * Creates observable of functions that will create react virtual dom.
@@ -31,7 +31,7 @@ function createContainer(Component, observables = {}, observers = {}, props = {}
     const initialState = {};
 
     const renderFn = () => (
-      <RxContainerController
+      <RxContainer
         props={props}
         callbacks={callbacks}
         initialState={initialState}

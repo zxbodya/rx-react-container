@@ -1,11 +1,11 @@
 {
   "name": "rx-react-container",
-  "version": "0.1.4",
+  "version": "0.2.0",
   "author": "Bogdan Savluk <savluk.bogdan@gmail.com>",
   "description": "Allows to use React as a view layer for RxJS application, and to wait for required data before first rendering.",
   "keywords": [
     "react",
-    "rx",
+    "rxjs",
     "container",
     "isomorphic"
   ],
@@ -28,7 +28,7 @@
   },
   "devDependencies": {
     "babel-cli": "^6.4.5",
-    "babel-core": "^6.20.0",
+    "babel-core": "^6.21.0",
     "babel-jest": "^18.0.0",
     "babel-plugin-transform-runtime": "^6.4.3",
     "babel-preset-es2015": "^6.3.13",

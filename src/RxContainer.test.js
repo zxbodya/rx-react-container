@@ -1,7 +1,7 @@
 import React from 'react';
 import { mount } from 'enzyme';
 import { Observable } from 'rxjs';
-import RxContainerController from './RxContainerController';
+import { RxContainer } from './RxContainer';
 
 function StaticView() {
   return <div id="root">Hello</div>;
@@ -12,7 +12,7 @@ describe('RxContainerController', () => {
   let disposeCount = 0;
 
   const wrapper = mount(
-    <RxContainerController
+    <RxContainer
       component={StaticView}
       observable={Observable.create(o => {
         subscribeCount += 1;
