@@ -40,9 +40,9 @@ export class RxContainer extends React.Component {
 }
 
 RxContainer.propTypes = {
-  component: React.PropTypes.func,
-  observable: React.PropTypes.object,
-  initialState: React.PropTypes.object,
-  props: React.PropTypes.object,
-  callbacks: React.PropTypes.object,
+  component: React.PropTypes.func.isRequired,
+  observable: React.PropTypes.object.isRequired,
+  initialState: React.PropTypes.object.isRequired,
+  props: React.PropTypes.object.isRequired,
+  callbacks: React.PropTypes.object.isRequired,
 };

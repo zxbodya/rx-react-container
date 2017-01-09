@@ -1,4 +1,4 @@
-import { Observable } from 'rxjs';
+import { combineLatest } from 'rxjs/observable/combineLatest';
 
 export function combineLatestObj(obj) {
   const sources = [];
@@ -10,7 +10,7 @@ export function combineLatestObj(obj) {
       sources.push(obj[key]);
     }
   }
-  return Observable.combineLatest(sources, (...args) => {
+  return combineLatest(sources, (...args) => {
     const combination = {};
     for (let i = args.length - 1; i >= 0; i -= 1) {
       combination[keys[i]] = args[i];
