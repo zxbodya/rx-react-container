@@ -1,6 +1,12 @@
 import React from 'react';
 
-import { Observable } from 'rxjs';
+import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/observable/defer';
+import 'rxjs/add/observable/of';
+import 'rxjs/add/operator/do';
+import 'rxjs/add/operator/mapTo';
+import 'rxjs/add/operator/distinctUntilChanged';
+import 'rxjs/add/operator/share';
 
 import { combineLatestObj } from './combineLatestObj';
 

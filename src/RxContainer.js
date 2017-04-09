@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 export class RxContainer extends React.Component {
   constructor(props) {
@@ -40,9 +41,9 @@ export class RxContainer extends React.Component {
 }
 
 RxContainer.propTypes = {
-  component: React.PropTypes.func.isRequired,
-  observable: React.PropTypes.object.isRequired,
-  initialState: React.PropTypes.object.isRequired,
-  props: React.PropTypes.object.isRequired,
-  callbacks: React.PropTypes.object.isRequired,
+  component: PropTypes.func.isRequired,
+  observable: PropTypes.object.isRequired,
+  initialState: PropTypes.object.isRequired,
+  props: PropTypes.object.isRequired,
+  callbacks: PropTypes.object.isRequired,
 };

@@ -1,6 +1,14 @@
 import React from 'react';
 import { mount } from 'enzyme';
-import { Subject, Observable } from 'rxjs';
+import { Observable } from 'rxjs/Observable';
+import { Subject } from 'rxjs/Subject';
+
+import 'rxjs/add/observable/merge';
+import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/first';
+import 'rxjs/add/operator/startWith';
+import 'rxjs/add/operator/scan';
+
 import createContainer from './index';
 
 function StaticView() {
@@ -42,7 +50,7 @@ describe('createContainer', () => {
   it('renders static view', (done) => {
     createContainer(StaticView)
       .first()
-      .forEach(renderApp => {
+      .subscribe(renderApp => {
         const wrapper = mount(renderApp());
         expect(wrapper.find('#root').text()).toBe('Hello');
         wrapper.unmount();
@@ -53,7 +61,7 @@ describe('createContainer', () => {
   it('works', (done) => {
     createSampleContainer()
       .first()
-      .forEach(renderApp => {
+      .subscribe(renderApp => {
         const wrapper = mount(renderApp());
         expect(wrapper.find('#count').text()).toBe('0');
         setTimeout(() => {
