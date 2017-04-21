@@ -29,30 +29,21 @@ function createContainer(Component, observables = {}, observers = {}, props = {}
     };
   });
 
-  return Observable.defer(() => {
-    const propsObservable = Object.keys(observables).length === 0
-      ? Observable.of([{}])
-      : combineLatestObj(observables).share();
+  const propsObservable = Object.keys(observables).length === 0
+    ? Observable.of([{}])
+    : combineLatestObj(observables).share();
 
-    const initialState = {};
+  const initialState = {};
 
-    const renderFn = () => (
-      <RxContainer
-        props={props}
-        callbacks={callbacks}
-        initialState={initialState}
-        component={Component}
-        observable={propsObservable}
-      />
-    );
-
-    return propsObservable
-      .do(state => {
-        Object.assign(initialState, state);
-      })
-      .mapTo(renderFn)
-      .distinctUntilChanged();
-  });
+  return (initialProps) => (
+    <RxContainer
+      props={{...initialProps, ...props}}
+      callbacks={callbacks}
+      initialState={initialState}
+      component={Component}
+      observable={propsObservable}
+    />
+  );
 }
 
 export default createContainer;
