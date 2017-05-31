@@ -13,7 +13,7 @@ import { combineLatestObj } from './combineLatestObj';
  * @param {Object.<string, Observer>} observers=
  * @param {Object=} props=
  */
-export function combineProps(observables, observers = undefined, props = undefined) {
+export function combineProps(observables, observers, props) {
   const baseProps = Object.assign({}, props);
 
   if (observers) {
@@ -29,5 +29,5 @@ export function combineProps(observables, observers = undefined, props = undefin
       .map(newProps => Object.assign({}, baseProps, newProps));
   }
 
-  return Observable.of([baseProps]);
+  return Observable.of(baseProps);
 }

@@ -30,10 +30,6 @@ export function connect(controller) {
         this.props$.next(nextProps);
       }
 
-      shouldComponentUpdate(nextProps, nextState) {
-        return nextState.props !== this.state.props;
-      }
-
       componentWillUnmount() {
         this.subscription.unsubscribe();
       }
