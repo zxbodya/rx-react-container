@@ -17,6 +17,9 @@ export function connect(controller) {
         this.props$ = new BehaviorSubject(props);
         this.subscription = null;
         this.stateProps$ = controller(this);
+        if (!this.stateProps$.subscribe) {
+          throw new Error('controller should return observable');
+        }
       }
 
       componentWillMount() {
@@ -71,6 +74,7 @@ export function connect(controller) {
         Container.dispalyName = `connect(${name})`;
       }
     }
+
     return Container;
   };
 }

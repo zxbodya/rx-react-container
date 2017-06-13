@@ -9,9 +9,9 @@ import { combineLatestObj } from './combineLatestObj';
  * Creates observable combining values from observables, observers(as callbacks) and plain object
  * resulting in Observable of properties to be rendered with react component.
  *
- * @param {Object.<string, Observable>} observables
+ * @param {Object.<string, Observable>} observables=
  * @param {Object.<string, Observer>} observers=
- * @param {Object=} props=
+ * @param {Object} props=
  */
 export function combineProps(observables, observers, props) {
   const baseProps = Object.assign({}, props);
