@@ -4,7 +4,6 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/distinctUntilChanged';
 
 /**
- * High
  * @param controller
  * @return {function(*=)}
  */
@@ -41,7 +40,7 @@ export function connect(controller) {
        * Observable with prop by key
        * @param key
        */
-      prop(key) {
+      getProp(key) {
         return this.props$
           .map(props => props[key])
           .distinctUntilChanged();
@@ -51,7 +50,7 @@ export function connect(controller) {
        * Observable with props by keys
        * @param keys
        */
-      props(...keys) {
+      getProps(...keys) {
         return this.props$
           .distinctUntilChanged((p, q) => {
             for (let i = 0, l = keys.length; i < l; i += 1) {

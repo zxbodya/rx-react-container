@@ -8,7 +8,7 @@ export class RxContainer extends React.Component {
     this.subscription = null;
   }
 
-  componentDidMount() {
+  componentWillMount() {
     this.subscription = this.props.observable.subscribe(props => {
       this.setState({ props });
     });
@@ -29,14 +29,7 @@ export class RxContainer extends React.Component {
   }
 
   render() {
-    const Component = this.props.component;
-    return (
-      <Component
-        {...this.props.props}
-        {...this.props.callbacks}
-        {...this.state.props}
-      />
-    );
+    return React.createElement(this.props.component, this.state.props);
   }
 }
 
@@ -44,6 +37,4 @@ RxContainer.propTypes = {
   component: PropTypes.func.isRequired,
   observable: PropTypes.object.isRequired,
   initialState: PropTypes.object.isRequired,
-  props: PropTypes.object.isRequired,
-  callbacks: PropTypes.object.isRequired,
 };

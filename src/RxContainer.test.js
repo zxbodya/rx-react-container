@@ -22,8 +22,6 @@ describe('RxContainerController', () => {
         };
       })}
       initialState={{}}
-      props={{}}
-      callbacks={{}}
     />
   );
 

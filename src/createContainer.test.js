@@ -1,6 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-
 import { mount } from 'enzyme';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
@@ -11,7 +9,11 @@ import 'rxjs/add/operator/first';
 import 'rxjs/add/operator/startWith';
 import 'rxjs/add/operator/scan';
 
-import { connect, combineProps } from './index';
+import createContainer from './index';
+
+function StaticView() {
+  return <div id="root">Hello</div>;
+}
 
 function App({ plusOne, minusOne, totalCount }) {
   return (
@@ -24,12 +26,12 @@ function App({ plusOne, minusOne, totalCount }) {
 }
 
 App.propTypes = {
-  plusOne: PropTypes.func.isRequired,
-  minusOne: PropTypes.func.isRequired,
-  totalCount: PropTypes.number.isRequired,
+  plusOne: React.PropTypes.any,
+  minusOne: React.PropTypes.any,
+  totalCount: React.PropTypes.any,
 };
 
-function sampleController() {
+function createSampleContainer() {
   const plusOne$ = new Subject();
   const minusOne$ = new Subject();
 
@@ -41,32 +43,45 @@ function sampleController() {
     .startWith(0)
     .scan((acc, x) => acc + x, 0);
 
-  return combineProps({ totalCount$ }, { plusOne$, minusOne$ });
+  return createContainer(App, { totalCount$ }, { plusOne$, minusOne$ });
 }
 
-const AppContainer = connect(sampleController)(App);
-
 describe('createContainer', () => {
+  it('renders static view', (done) => {
+    createContainer(StaticView)
+      .first()
+      .subscribe(renderApp => {
+        const wrapper = mount(renderApp());
+        expect(wrapper.find('#root').text()).toBe('Hello');
+        wrapper.unmount();
+        done();
+      });
+  });
+
   it('works', (done) => {
-    const wrapper = mount(<AppContainer />);
-    expect(wrapper.find('#count').text()).toBe('0');
-    setTimeout(() => {
-      wrapper.find('#plus').simulate('click');
-      setTimeout(() => {
-        expect(wrapper.find('#count').text()).toBe('1');
-        wrapper.find('#plus').simulate('click');
-        wrapper.find('#plus').simulate('click');
+    createSampleContainer()
+      .first()
+      .subscribe(renderApp => {
+        const wrapper = mount(renderApp());
+        expect(wrapper.find('#count').text()).toBe('0');
         setTimeout(() => {
-          expect(wrapper.find('#count').text()).toBe('3');
-          wrapper.find('#minus').simulate('click');
-          wrapper.find('#minus').simulate('click');
+          wrapper.find('#plus').simulate('click');
           setTimeout(() => {
             expect(wrapper.find('#count').text()).toBe('1');
-            wrapper.unmount();
-            done();
+            wrapper.find('#plus').simulate('click');
+            wrapper.find('#plus').simulate('click');
+            setTimeout(() => {
+              expect(wrapper.find('#count').text()).toBe('3');
+              wrapper.find('#minus').simulate('click');
+              wrapper.find('#minus').simulate('click');
+              setTimeout(() => {
+                expect(wrapper.find('#count').text()).toBe('1');
+                wrapper.unmount();
+                done();
+              }, 10);
+            }, 10);
           }, 10);
         }, 10);
-      }, 10);
-    }, 10);
+      });
   });
 });
