@@ -1,0 +1,66 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`combineProps ignores $ suffix 1`] = `
+Array [
+  Object {
+    "a": [Function],
+    "b": 1,
+  },
+]
+`;
+
+exports[`combineProps works correctly for empty argumenes 1`] = `
+Array [
+  Object {},
+]
+`;
+
+exports[`combineProps works correctly for no argumenes 1`] = `
+Array [
+  Object {},
+]
+`;
+
+exports[`combineProps works correctly for observables 1`] = `
+Array [
+  Object {
+    "a": 1,
+    "b": 2,
+  },
+]
+`;
+
+exports[`combineProps works correctly observers 1`] = `
+Array [
+  Object {
+    "a": [Function],
+  },
+]
+`;
+
+exports[`combineProps works correctly when props are passed 1`] = `
+Array [
+  Object {
+    "a": 1,
+  },
+]
+`;
+
+exports[`combineProps works for complete sample 1`] = `
+Array [
+  Object {
+    "a": 1,
+    "b": 0,
+    "c": 1,
+    "d": 2,
+    "onB": [Function],
+  },
+  Object {
+    "a": 1,
+    "b": 1,
+    "c": 1,
+    "d": 2,
+    "onB": [Function],
+  },
+]
+`;
