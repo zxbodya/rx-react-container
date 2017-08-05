@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { mount } from 'enzyme';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
@@ -26,9 +27,9 @@ function App({ plusOne, minusOne, totalCount }) {
 }
 
 App.propTypes = {
-  plusOne: React.PropTypes.any,
-  minusOne: React.PropTypes.any,
-  totalCount: React.PropTypes.any,
+  plusOne: PropTypes.any,
+  minusOne: PropTypes.any,
+  totalCount: PropTypes.any,
 };
 
 function createSampleContainer() {

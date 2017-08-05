@@ -17,7 +17,7 @@ export function connect(controller) {
         this.subscription = null;
         this.stateProps$ = controller(this);
         if (!this.stateProps$.subscribe) {
-          throw new Error('controller should return observable');
+          throw new Error('controller should return an observable');
         }
       }
 
