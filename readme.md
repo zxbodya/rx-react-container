@@ -3,82 +3,119 @@
 [![Build Status](https://travis-ci.org/zxbodya/rx-react-container.svg?branch=master)](https://travis-ci.org/zxbodya/rx-react-container)
 [![codecov.io](https://codecov.io/github/zxbodya/rx-react-container/coverage.svg?branch=master)](https://codecov.io/github/zxbodya/rx-react-container?branch=master)
 
-Allows to use React as a view layer for RxJS application, and to wait for required data before first rendering. 
+Provides HoC component, and utilities allowing to transparently connecting RxJS logic to React Component.
 
 Works by wrapping React Component into container that:
 
- * passes data form observables
- * connects component to observers via callbacks
+ - provides access to props passed to it as observables (both individual, and combinations - see details below)
+ - renders wrapped component with data form observable created in controller
+ - provides utility to combine observables, observers and static props into one observable of props to be rendered
 
-Also it is super useful when doing isomorphic apps - it allows to wait for data before first render(actually it was one of my biggest reasons to make this).
+In previous versions of this library(and, for compatibility reasons, in current) it also provides a function creating Observable with functions returning virtual dom ready to be rendered. 
+ Which I was considering useful for doing isomorphic apps - because,
+ it allowed to wait for data before first render(actually it was one of reasons to start this project).
 
-If you are interested in history of this library - look at [gist about it](https://gist.github.com/zxbodya/20c63681d45a049df3fc).
+But, I suggest new approach with HoC - as better, so `createContainer` is deprecated, and planned to be removed in future.
 
-First place where it is already used is my [reactive-widgets](https://github.com/zxbodya/reactive-widgets) project.
+If you are interested in history this - look at [gist about it](https://gist.github.com/zxbodya/20c63681d45a049df3fc).
+
+First place where it was already used is [reactive-widgets](https://github.com/zxbodya/reactive-widgets) project.
 
 ### Installation
 
 `npm install rx-react-container --save`
 
-(If you are looking for RxJS 4 version - see version 0.1.4)
- 
+(If you are looking for RxJS 4 version - see version 0.1.4 - `createContainer` only)
+
+```JS
+import { connect, combineProps } from 'rx-react-container';
+
+// deprecated createContainer
+import createContainer from 'rx-react-container';
+```
+
 ### Documentation
 
-Module exports function:
+Basic usage:
 
-`createContainer(Component, observables, observers, props)`
+```
+const ContainerComponent = connect(
+  controller: container => Observable<WrappedComponentProps>
+)(WrappedComponent)
+```
+
+This will create HoC combining controller and React Component.
+
+`controller` here is a function creating observable of properties to be passed to wrapped component. It is called on component creation and receives container component instance as argument.
+ 
+container instance provides few helper methods to access props as observables:
+
+- `getProp(name)` - returning observable of distinct values of specified property
+- `getProps(...names)` - returning observable of distinct arrays of values for specified properties
+
+Also there is helper function to combine data into single observable (meant to be used in controller):
+
+`combineProps(observables, observers, props)` 
 
 Where:
 
-- `Component` react component to wrap
-- `observables` observables with data for component
-- `observers` observers to be passed as callbacks to component 
-- `props` props to pass directly to component 
+- `observables` object with observables with data for component
+- `observers` object with observers to be passed as callbacks to component 
+- `props` object with props to pass directly to component 
 
 In `observers` and `observables` key names it supports `$` 
 suffix popularized by Cycle.js ([What does the suffixed dollar sign `$` mean?](http://cycle.js.org/basic-examples.html#what-does-the-suffixed-dollar-sign-mean)). 
 For example if you pass `name$` stream - data from it would be passed as `name`. 
 
-It will create an observable, that will return function for rendering virtual dom with container component.
- 
-Container component has state - it is equal to latest combination of data from `observables`, and will be updated if state changes.
+Previous approach:
 
-Also container will correctly dispose subscription to observables when unmounted from DOM.   
+`createContainer(Component, observables, observers, props)`
+
+It creates an observable of functions rendering virtual dom with container component.
+ 
+Container component has state - it is equal to latest combination of data from `observables`, and is updated when state changes.
  
 ### Example:
 
 ```JS
 import React from 'react';
-import {render} from 'react-dom';
+import { render } from 'react-dom';
 
-import {Subject, Observable} from 'rxjs';
-import createContainer from 'rx-react-container';
+import { Subject, Observable } from 'rxjs';
+import { connect, combineProps } from 'rx-react-container';
 
-const plusOne$ = new Subject();
-const minusOne$ = new Subject();
-
-const totalCount$ = Observable
-  .merge(
-    plusOne$.map(() => +1),
-    minusOne$.map(() => -1)
-  )
-  .startWith(0)
-  .scan((acc, x) => acc + x, 0);
-
-const App = ({plusOne, minusOne, totalCount}) => {
+function App({ onMinus, onPlus, totalCount, step }) {
   return (
     <div>
-      <button onClick={minusOne}>-</button>
-      [{totalCount}]
-      <button onClick={plusOne}>+</button>
+      <button onClick={onMinus}>-{step}</button>
+      [<span>{totalCount}</span>]
+      <button onClick={onPlus}>+{step}</button>
     </div>
   );
-};
+}
 
-const app$ = createContainer(App, {totalCount$}, {plusOne$, minusOne$});
+function appController(container) {
+  const onMinus$ = new Subject();
+  const onPlus$ = new Subject();
+
+  const click$ = Observable
+    .merge(
+      onMinus$.map(() => -1),
+      onPlus$.map(() => +1)
+    );
+  const step$ = container.getProp('step');
+  
+  const totalCount$ = step$
+    .switchMap(step => click$.map(v => v * step))
+    .startWith(0)
+    .scan((acc, x) => acc + x, 0);
+
+  return combineProps({ totalCount$, step$ }, { onMinus$, onPlus$ });
+}
+
+const AppContainer = connect(appController)(App);
 
 const appElement = document.getElementById('app');
-
-app$.forEach(renderApp=>render(renderApp(), appElement));
+render(<AppContainer step="1"/>, appElement);
 
 ```

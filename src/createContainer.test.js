@@ -10,7 +10,7 @@ import 'rxjs/add/operator/first';
 import 'rxjs/add/operator/startWith';
 import 'rxjs/add/operator/scan';
 
-import createContainer from './index';
+import { createContainer } from './createContainer';
 
 function StaticView() {
   return <div id="root">Hello</div>;

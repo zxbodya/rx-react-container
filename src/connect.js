@@ -86,7 +86,7 @@ export function connect(controller) {
     if (process.env.NODE_ENV !== 'production') {
       const name = Component.displayName || Component.name;
       if (name) {
-        Container.dispalyName = `connect(${name})`;
+        Container.displayName = `connect(${name})`;
       }
     }
 

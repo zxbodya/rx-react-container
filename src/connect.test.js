@@ -15,32 +15,32 @@ import 'rxjs/add/operator/switchMap';
 
 import { connect, combineProps } from './index';
 
-function App({ plusOne, minusOne, totalCount, title }) {
+function App({ onMinus, onPlus, totalCount, title }) {
   return (
     <div>
       <h1 id="title">{title}</h1>
-      <button onClick={minusOne} id="minus">-</button>
+      <button onClick={onMinus} id="minus">-</button>
       [<span id="count">{totalCount}</span>]
-      <button onClick={plusOne} id="plus">+</button>
+      <button onClick={onPlus} id="plus">+</button>
     </div>
   );
 }
 
 App.propTypes = {
-  plusOne: PropTypes.func.isRequired,
-  minusOne: PropTypes.func.isRequired,
+  onMinus: PropTypes.func.isRequired,
+  onPlus: PropTypes.func.isRequired,
   totalCount: PropTypes.number.isRequired,
   title: PropTypes.string.isRequired,
 };
 
 function sampleController(container) {
-  const plusOne$ = new Subject();
-  const minusOne$ = new Subject();
+  const onMinus$ = new Subject();
+  const onPlus$ = new Subject();
 
   const click$ = Observable
     .merge(
-      plusOne$.map(() => +1),
-      minusOne$.map(() => -1)
+      onMinus$.map(() => -1),
+      onPlus$.map(() => +1)
     );
   const totalCount$ = container
     .getProp('step')
@@ -52,7 +52,7 @@ function sampleController(container) {
     .getProps('step', 'heading')
     .map(([step, heading]) => `${heading} - ${step}`);
 
-  return combineProps({ totalCount$, title$ }, { plusOne$, minusOne$ });
+  return combineProps({ totalCount$, title$ }, { onMinus$, onPlus$ });
 }
 
 const AppContainer = connect(sampleController)(App);
