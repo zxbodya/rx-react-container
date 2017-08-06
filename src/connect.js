@@ -2,6 +2,7 @@ import React from 'react';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/distinctUntilChanged';
+import 'rxjs/add/operator/first';
 
 /**
  * @param controller
@@ -10,22 +11,37 @@ import 'rxjs/add/operator/distinctUntilChanged';
 export function connect(controller) {
   return Component => {
     class Container extends React.Component {
-      constructor(props) {
-        super();
+      constructor(props, context) {
+        super(props, context);
         this.state = { props: null };
         this.props$ = new BehaviorSubject(props);
         this.subscription = null;
-        this.stateProps$ = controller(this);
-        if (!this.stateProps$.subscribe) {
+        this.firstSubscription = null;
+        const stateProps$ = controller(this);
+        if (!stateProps$.subscribe) {
           throw new Error('controller should return an observable');
         }
+        this.stateProps$ = stateProps$.share();
       }
 
       componentWillMount() {
+        // create subscription to get initial data
+        // not creating permanent subscription, because componentWillUnmount is not called server-side
+        // which in many cases will result in memory leak
+        this.firstSubscription = this.stateProps$
+          .first()
+          .subscribe(props => {
+            this.setState({ props });
+          });
+      }
+
+      componentDidMount() {
         this.subscription = this.stateProps$
           .subscribe(props => {
             this.setState({ props });
           });
+        // in case no data was received before first render - remove duplicated subscription
+        this.firstSubscription.unsubscribe();
       }
 
       componentWillReceiveProps(nextProps) {

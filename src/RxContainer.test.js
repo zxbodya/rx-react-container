@@ -14,7 +14,7 @@ StaticView.propTypes = {
   heading: PropTypes.string.isRequired,
 };
 
-describe('RxContainerController', () => {
+describe('RxContainer', () => {
   let subscribeCount = 0;
   let disposeCount = 0;
   let wrapper;
@@ -30,7 +30,7 @@ describe('RxContainerController', () => {
             disposeCount += 1;
           };
         })}
-        initialState={{}}
+        initialState={{ heading: 'Hello' }}
       />
     );
   });

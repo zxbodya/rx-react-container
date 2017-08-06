@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { mount } from 'enzyme';
+import { mount, render } from 'enzyme';
 
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
@@ -117,4 +117,10 @@ test('connect - displayName', () => {
   expect(Cmp2.dispalyName).toBe(undefined);
 
   process.env.NODE_ENV = NODE_ENV;
+});
+
+test('server side rendering', () => {
+  const wrapper = render(<AppContainer step="1" heading="Test" />);
+  expect(wrapper.find('#count').text()).toBe('0');
+  expect(wrapper.find('#title').text()).toBe('Test - 1');
 });

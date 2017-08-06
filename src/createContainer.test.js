@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { mount } from 'enzyme';
+import { mount, render } from 'enzyme';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 
@@ -80,6 +80,15 @@ describe('createContainer', () => {
           wrapper.unmount();
           done();
         });
+      });
+  });
+  it('ssr', (done) => {
+    createSampleContainer()
+      .first()
+      .subscribe(renderApp => {
+        const wrapper = render(renderApp());
+        expect(wrapper.find('#count').text()).toBe('0');
+        done();
       });
   });
 });
