@@ -67,22 +67,19 @@ describe('createContainer', () => {
         expect(wrapper.find('#count').text()).toBe('0');
         setTimeout(() => {
           wrapper.find('#plus').simulate('click');
-          setTimeout(() => {
-            expect(wrapper.find('#count').text()).toBe('1');
-            wrapper.find('#plus').simulate('click');
-            wrapper.find('#plus').simulate('click');
-            setTimeout(() => {
-              expect(wrapper.find('#count').text()).toBe('3');
-              wrapper.find('#minus').simulate('click');
-              wrapper.find('#minus').simulate('click');
-              setTimeout(() => {
-                expect(wrapper.find('#count').text()).toBe('1');
-                wrapper.unmount();
-                done();
-              }, 10);
-            }, 10);
-          }, 10);
-        }, 10);
+
+          expect(wrapper.find('#count').text()).toBe('1');
+          wrapper.find('#plus').simulate('click');
+          wrapper.find('#plus').simulate('click');
+
+          expect(wrapper.find('#count').text()).toBe('3');
+          wrapper.find('#minus').simulate('click');
+          wrapper.find('#minus').simulate('click');
+
+          expect(wrapper.find('#count').text()).toBe('1');
+          wrapper.unmount();
+          done();
+        });
       });
   });
 });

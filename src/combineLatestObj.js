@@ -5,6 +5,7 @@ export function combineLatestObj(obj) {
   const keys = [];
   // eslint-disable-next-line no-restricted-syntax
   for (const key in obj) {
+    /* istanbul ignore else  */
     if (Object.prototype.hasOwnProperty.call(obj, key)) {
       keys.push(key.replace(/\$$/, ''));
       sources.push(obj[key]);

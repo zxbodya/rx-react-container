@@ -1,29 +1,39 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { mount } from 'enzyme';
-import { Observable } from 'rxjs';
+import { Observable, BehaviorSubject } from 'rxjs';
 import { RxContainer } from './RxContainer';
 
-function StaticView() {
-  return <div id="root">Hello</div>;
+function StaticView({ heading }) {
+  return (
+    <div id="root">{heading}</div>
+  );
 }
+
+StaticView.propTypes = {
+  heading: PropTypes.string.isRequired,
+};
 
 describe('RxContainerController', () => {
   let subscribeCount = 0;
   let disposeCount = 0;
+  let wrapper;
 
-  const wrapper = mount(
-    <RxContainer
-      component={StaticView}
-      observable={Observable.create(o => {
-        subscribeCount += 1;
-        o.next({});
-        return () => {
-          disposeCount += 1;
-        };
-      })}
-      initialState={{}}
-    />
-  );
+  beforeAll(() => {
+    wrapper = mount(
+      <RxContainer
+        component={StaticView}
+        observable={Observable.create(o => {
+          subscribeCount += 1;
+          o.next({ heading: 'Hello' });
+          return () => {
+            disposeCount += 1;
+          };
+        })}
+        initialState={{}}
+      />
+    );
+  });
 
   it('renders static view', () => {
     expect(wrapper.find('#root').text()).toBe('Hello');
@@ -38,8 +48,20 @@ describe('RxContainerController', () => {
   });
 
   it('creates new subscription on render with different observable', () => {
-    wrapper.setProps({ observable: Observable.of({}) });
+    wrapper.setProps({ observable: Observable.of({ heading: 'Hello' }) });
     expect(subscribeCount).toBe(1);
     expect(disposeCount).toBe(1);
+  });
+
+  it('renders updated values when received', () => {
+    const data = new BehaviorSubject({ heading: 'initial' });
+    wrapper.setProps({ observable: data });
+    expect(wrapper.find('#root').text()).toBe('initial');
+    data.next({ heading: 'new' });
+    expect(wrapper.find('#root').text()).toBe('new');
+  });
+
+  afterAll(() => {
+    wrapper.unmount();
   });
 });

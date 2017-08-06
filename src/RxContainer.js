@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 export class RxContainer extends React.Component {
   constructor(props) {
-    super();
+    super(props);
     this.state = { props: props.initialState };
     this.subscription = null;
   }
