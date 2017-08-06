@@ -106,7 +106,7 @@ test('connect - displayName', () => {
   // eslint-disable-next-line prefer-arrow-callback
   const Cmp1 = connect(() => 0)(function Name1() {
   });
-  expect(Cmp1.dispalyName).toBe('connect(Name1)');
+  expect(Cmp1.displayName).toBe('connect(Name1)');
 
   const NODE_ENV = process.env.NODE_ENV;
   process.env.NODE_ENV = 'production';
@@ -114,7 +114,7 @@ test('connect - displayName', () => {
   // eslint-disable-next-line prefer-arrow-callback
   const Cmp2 = connect(() => 0)(function Name2() {
   });
-  expect(Cmp2.dispalyName).toBe(undefined);
+  expect(Cmp2.displayName).toBe(undefined);
 
   process.env.NODE_ENV = NODE_ENV;
 });
