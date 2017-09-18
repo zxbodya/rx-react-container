@@ -1,5 +1,9 @@
 # Changelog
 
+##0.4.0 (2017-09-18)
+
+Start using rollup to bundle library for distribution
+
 ##0.3.0 (2017-08-06)
 
 Introduce HoC connecting RxJS logic to React Component.

@@ -4,11 +4,20 @@
     [
       "es2015",
       {
-        "loose": true
+        "loose": true,
+        "modules": false
       }
     ]
   ],
   "plugins": [
     "transform-runtime"
-  ]
+  ],
+  "env": {
+    "test": {
+      "presets": [
+        "react",
+        "es2015"
+      ]
+    }
+  }
 }

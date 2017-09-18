@@ -17,7 +17,7 @@ In previous versions of this library(and, for compatibility reasons, in current)
 
 But, I suggest new approach with HoC - as better, so `createContainer` is deprecated, and planned to be removed in future.
 
-If you are interested in history this - look at [gist about it](https://gist.github.com/zxbodya/20c63681d45a049df3fc).
+If you are interested in history behind this - look at [gist about it](https://gist.github.com/zxbodya/20c63681d45a049df3fc).
 
 First place where it was already used is [reactive-widgets](https://github.com/zxbodya/reactive-widgets) project.
 

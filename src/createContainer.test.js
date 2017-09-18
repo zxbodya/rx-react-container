@@ -27,9 +27,9 @@ function App({ plusOne, minusOne, totalCount }) {
 }
 
 App.propTypes = {
-  plusOne: PropTypes.any,
-  minusOne: PropTypes.any,
-  totalCount: PropTypes.any,
+  plusOne: PropTypes.any.isRequired,
+  minusOne: PropTypes.any.isRequired,
+  totalCount: PropTypes.any.isRequired,
 };
 
 function createSampleContainer() {
