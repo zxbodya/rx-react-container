@@ -1,5 +1,9 @@
 # Changelog
 
+##0.4.1 (2017-10-07)
+
+Update react peer dependency. Dev tooling updates
+
 ##0.4.0 (2017-09-18)
 
 Start using rollup to bundle library for distribution
