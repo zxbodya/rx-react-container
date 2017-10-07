@@ -15,7 +15,9 @@ import 'rxjs/add/operator/switchMap';
 
 import { connect, combineProps } from './index';
 
-function App({ onMinus, onPlus, totalCount, title }) {
+function App({
+  onMinus, onPlus, totalCount, title,
+}) {
   return (
     <div>
       <h1 id="title">{title}</h1>
@@ -94,12 +96,10 @@ test('connect', (done) => {
 });
 
 test('connect to throw if no observable returned', () => {
-  expect(
-    () => {
-      const Cmp = connect(() => 0)(() => null);
-      return new Cmp({}, {});
-    }
-  ).toThrow('controller should return an observable');
+  expect(() => {
+    const Cmp = connect(() => 0)(() => null);
+    return new Cmp({}, {});
+  }).toThrow('controller should return an observable');
 });
 
 test('connect - displayName', () => {

@@ -12,6 +12,7 @@
     "jsx-no-bind": 0,
     "react/jsx-no-bind": 0,
     "prefer-template": 1,
+    "prefer-destructuring": 0,
     "max-len": [
       "error",
       120
