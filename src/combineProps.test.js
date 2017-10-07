@@ -10,7 +10,7 @@ import 'rxjs/add/observable/interval';
 import { combineProps } from './combineProps';
 
 describe('combineProps', () => {
-  it('works correctly for no argumenes', (done) => {
+  it('works correctly for no argumenes', done => {
     combineProps()
       .toArray()
       .subscribe(v => {
@@ -19,7 +19,7 @@ describe('combineProps', () => {
       });
   });
 
-  it('works correctly for empty argumenes', (done) => {
+  it('works correctly for empty argumenes', done => {
     combineProps({}, {}, {})
       .toArray()
       .subscribe(v => {
@@ -28,7 +28,7 @@ describe('combineProps', () => {
       });
   });
 
-  it('works correctly when props are passed', (done) => {
+  it('works correctly when props are passed', done => {
     combineProps({}, {}, { a: 1 })
       .toArray()
       .subscribe(v => {
@@ -37,11 +37,15 @@ describe('combineProps', () => {
       });
   });
 
-  it('works correctly for observables', (done) => {
-    combineProps({
-      a: Observable.of(1),
-      b: Observable.of(2),
-    }, {}, {})
+  it('works correctly for observables', done => {
+    combineProps(
+      {
+        a: Observable.of(1),
+        b: Observable.of(2),
+      },
+      {},
+      {}
+    )
       .toArray()
       .subscribe(v => {
         expect(v).toMatchSnapshot();
@@ -49,11 +53,15 @@ describe('combineProps', () => {
       });
   });
 
-  it('works correctly observers', (done) => {
+  it('works correctly observers', done => {
     const a$ = new BehaviorSubject(0);
-    combineProps({}, {
-      a: a$,
-    }, {})
+    combineProps(
+      {},
+      {
+        a: a$,
+      },
+      {}
+    )
       .toArray()
       .subscribe(v => {
         expect(v).toMatchSnapshot();
@@ -63,13 +71,17 @@ describe('combineProps', () => {
       });
   });
 
-  it('ignores $ suffix', (done) => {
+  it('ignores $ suffix', done => {
     const a$ = new BehaviorSubject(0);
-    combineProps({
-      b$: Observable.of(1),
-    }, {
-      a$,
-    }, {})
+    combineProps(
+      {
+        b$: Observable.of(1),
+      },
+      {
+        a$,
+      },
+      {}
+    )
       .toArray()
       .subscribe(v => {
         expect(v).toMatchSnapshot();
@@ -80,17 +92,21 @@ describe('combineProps', () => {
       });
   });
 
-  it('works for complete sample', (done) => {
+  it('works for complete sample', done => {
     const b$ = new BehaviorSubject(0);
-    combineProps({
-      a$: Observable.of(1),
-      b$,
-    }, {
-      onB: b$,
-    }, {
-      c: 1,
-      d: 2,
-    })
+    combineProps(
+      {
+        a$: Observable.of(1),
+        b$,
+      },
+      {
+        onB: b$,
+      },
+      {
+        c: 1,
+        d: 2,
+      }
+    )
       .do(({ onB }) => setTimeout(onB, 1, 1))
       .take(2)
       .toArray()

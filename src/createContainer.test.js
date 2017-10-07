@@ -19,9 +19,13 @@ function StaticView() {
 function App({ plusOne, minusOne, totalCount }) {
   return (
     <div>
-      <button onClick={minusOne} id="minus">-</button>
+      <button onClick={minusOne} id="minus">
+        -
+      </button>
       [<span id="count">{totalCount}</span>]
-      <button onClick={plusOne} id="plus">+</button>
+      <button onClick={plusOne} id="plus">
+        +
+      </button>
     </div>
   );
 }
@@ -36,11 +40,10 @@ function createSampleContainer() {
   const plusOne$ = new Subject();
   const minusOne$ = new Subject();
 
-  const totalCount$ = Observable
-    .merge(
-      plusOne$.map(() => +1),
-      minusOne$.map(() => -1)
-    )
+  const totalCount$ = Observable.merge(
+    plusOne$.map(() => +1),
+    minusOne$.map(() => -1)
+  )
     .startWith(0)
     .scan((acc, x) => acc + x, 0);
 
@@ -48,7 +51,7 @@ function createSampleContainer() {
 }
 
 describe('createContainer', () => {
-  it('renders static view', (done) => {
+  it('renders static view', done => {
     createContainer(StaticView)
       .first()
       .subscribe(renderApp => {
@@ -59,7 +62,7 @@ describe('createContainer', () => {
       });
   });
 
-  it('works', (done) => {
+  it('works', done => {
     createSampleContainer()
       .first()
       .subscribe(renderApp => {
@@ -82,7 +85,7 @@ describe('createContainer', () => {
         });
       });
   });
-  it('ssr', (done) => {
+  it('ssr', done => {
     createSampleContainer()
       .first()
       .subscribe(renderApp => {

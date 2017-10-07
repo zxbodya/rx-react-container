@@ -73,7 +73,12 @@ import { combineProps } from './combineProps';
  * @param {Object.<string, Observer>=} observers
  * @param {Object=} props
  */
-export function createContainer(Component, observables = {}, observers = {}, props = {}) {
+export function createContainer(
+  Component,
+  observables = {},
+  observers = {},
+  props = {}
+) {
   return Observable.defer(() => {
     const propsObservable = combineProps(observables, observers, props).share();
 

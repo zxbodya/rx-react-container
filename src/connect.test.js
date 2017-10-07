@@ -15,15 +15,17 @@ import 'rxjs/add/operator/switchMap';
 
 import { connect, combineProps } from './index';
 
-function App({
-  onMinus, onPlus, totalCount, title,
-}) {
+function App({ onMinus, onPlus, totalCount, title }) {
   return (
     <div>
       <h1 id="title">{title}</h1>
-      <button onClick={onMinus} id="minus">-</button>
+      <button onClick={onMinus} id="minus">
+        -
+      </button>
       [<span id="count">{totalCount}</span>]
-      <button onClick={onPlus} id="plus">+</button>
+      <button onClick={onPlus} id="plus">
+        +
+      </button>
     </div>
   );
 }
@@ -39,11 +41,10 @@ function sampleController(container) {
   const onMinus$ = new Subject();
   const onPlus$ = new Subject();
 
-  const click$ = Observable
-    .merge(
-      onMinus$.map(() => -1),
-      onPlus$.map(() => +1)
-    );
+  const click$ = Observable.merge(
+    onMinus$.map(() => -1),
+    onPlus$.map(() => +1)
+  );
   const totalCount$ = container
     .getProp('step')
     .switchMap(step => click$.map(v => v * step))
@@ -59,7 +60,7 @@ function sampleController(container) {
 
 const AppContainer = connect(sampleController)(App);
 
-test('connect', (done) => {
+test('connect', done => {
   const wrapper = mount(<AppContainer step="1" heading="Test" />);
   expect(wrapper.find('#count').text()).toBe('0');
   expect(wrapper.find('#title').text()).toBe('Test - 1');
@@ -104,16 +105,14 @@ test('connect to throw if no observable returned', () => {
 
 test('connect - displayName', () => {
   // eslint-disable-next-line prefer-arrow-callback
-  const Cmp1 = connect(() => 0)(function Name1() {
-  });
+  const Cmp1 = connect(() => 0)(function Name1() {});
   expect(Cmp1.displayName).toBe('connect(Name1)');
 
   const NODE_ENV = process.env.NODE_ENV;
   process.env.NODE_ENV = 'production';
 
   // eslint-disable-next-line prefer-arrow-callback
-  const Cmp2 = connect(() => 0)(function Name2() {
-  });
+  const Cmp2 = connect(() => 0)(function Name2() {});
   expect(Cmp2.displayName).toBe(undefined);
 
   process.env.NODE_ENV = NODE_ENV;

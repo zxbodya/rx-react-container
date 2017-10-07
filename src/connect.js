@@ -28,18 +28,15 @@ export function connect(controller) {
         // create subscription to get initial data
         // not creating permanent subscription, because componentWillUnmount is not called server-side
         // which in many cases will result in memory leak
-        this.firstSubscription = this.stateProps$
-          .first()
-          .subscribe(props => {
-            this.setState({ props });
-          });
+        this.firstSubscription = this.stateProps$.first().subscribe(props => {
+          this.setState({ props });
+        });
       }
 
       componentDidMount() {
-        this.subscription = this.stateProps$
-          .subscribe(props => {
-            this.setState({ props });
-          });
+        this.subscription = this.stateProps$.subscribe(props => {
+          this.setState({ props });
+        });
         // in case no data was received before first render - remove duplicated subscription
         this.firstSubscription.unsubscribe();
       }
@@ -57,9 +54,7 @@ export function connect(controller) {
        * @param key
        */
       getProp(key) {
-        return this.props$
-          .map(props => props[key])
-          .distinctUntilChanged();
+        return this.props$.map(props => props[key]).distinctUntilChanged();
       }
 
       /**
@@ -79,7 +74,9 @@ export function connect(controller) {
       }
 
       render() {
-        return this.state.props && React.createElement(Component, this.state.props);
+        return (
+          this.state.props && React.createElement(Component, this.state.props)
+        );
       }
     }
 

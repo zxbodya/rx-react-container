@@ -5,9 +5,7 @@ import { Observable, BehaviorSubject } from 'rxjs';
 import { RxContainer } from './RxContainer';
 
 function StaticView({ heading }) {
-  return (
-    <div id="root">{heading}</div>
-  );
+  return <div id="root">{heading}</div>;
 }
 
 StaticView.propTypes = {
@@ -20,17 +18,19 @@ describe('RxContainer', () => {
   let wrapper;
 
   beforeAll(() => {
-    wrapper = mount(<RxContainer
-      component={StaticView}
-      observable={Observable.create(o => {
+    wrapper = mount(
+      <RxContainer
+        component={StaticView}
+        observable={Observable.create(o => {
           subscribeCount += 1;
           o.next({ heading: 'Hello' });
           return () => {
             disposeCount += 1;
           };
         })}
-      initialState={{ heading: 'Hello' }}
-    />);
+        initialState={{ heading: 'Hello' }}
+      />
+    );
   });
 
   it('renders static view', () => {
