@@ -1,14 +1,14 @@
 # Changelog
 
-##0.4.1 (2017-10-07)
+## 0.4.1 (2017-10-07)
 
 Update react peer dependency. Dev tooling updates
 
-##0.4.0 (2017-09-18)
+## 0.4.0 (2017-09-18)
 
 Start using rollup to bundle library for distribution
 
-##0.3.0 (2017-08-06)
+## 0.3.0 (2017-08-06)
 
 Introduce HoC connecting RxJS logic to React Component.
 In comparison `createContainer` in previous versions this should provide:
@@ -29,24 +29,24 @@ As a drawback comparing to previous approach - it will not wait for data before 
  
 - fix possible memory leak when rendering server-side
  
-##0.2.2 (2017-05-20)
+## 0.2.2 (2017-05-20)
 
 - move rxjs and prop-types to peerDependencies
 - update deps
 - switch to loose compilation mode
 
-##0.2.1  (2017-04-09)
+## 0.2.1  (2017-04-09)
          
 - use RxJS in modular way(reducing resulting bundle size)
          
-##0.2.0  (2016-12-20)
+## 0.2.0  (2016-12-20)
 
 Upgrade to RxJS v5
 
-##0.1.4  (2016-04-06)
+## 0.1.4  (2016-04-06)
 
 Bugfix, performance improvements, documentation
 
-##0.1.0  (2015-12-05)
+## 0.1.0  (2015-12-05)
 
 Initial release
