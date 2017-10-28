@@ -1,11 +1,10 @@
 import React from 'react';
 
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/observable/defer';
-import 'rxjs/add/operator/do';
-import 'rxjs/add/operator/mapTo';
-import 'rxjs/add/operator/distinctUntilChanged';
-import 'rxjs/add/operator/share';
+import { defer } from 'rxjs/observable/defer';
+import { tap } from 'rxjs/operators/tap';
+import { mapTo } from 'rxjs/operators/mapTo';
+import { distinctUntilChanged } from 'rxjs/operators/distinctUntilChanged';
+import { share } from 'rxjs/operators/share';
 
 import { RxContainer } from './RxContainer';
 import { combineProps } from './combineProps';
@@ -79,8 +78,10 @@ export function createContainer(
   observers = {},
   props = {}
 ) {
-  return Observable.defer(() => {
-    const propsObservable = combineProps(observables, observers, props).share();
+  return defer(() => {
+    const propsObservable = combineProps(observables, observers, props).pipe(
+      share()
+    );
 
     const initialState = {};
 
@@ -93,11 +94,12 @@ export function createContainer(
       />
     );
 
-    return propsObservable
-      .do(state => {
+    return propsObservable.pipe(
+      tap(state => {
         Object.assign(initialState, state);
-      })
-      .mapTo(renderFn)
-      .distinctUntilChanged();
+      }),
+      mapTo(renderFn),
+      distinctUntilChanged()
+    );
   });
 }

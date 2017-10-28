@@ -3,15 +3,13 @@ import PropTypes from 'prop-types';
 
 import { mount, render } from 'enzyme';
 
-import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 
-import 'rxjs/add/observable/merge';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/first';
-import 'rxjs/add/operator/startWith';
-import 'rxjs/add/operator/scan';
-import 'rxjs/add/operator/switchMap';
+import { merge as mergeStatic } from 'rxjs/observable/merge';
+import { map } from 'rxjs/operators/map';
+import { startWith } from 'rxjs/operators/startWith';
+import { scan } from 'rxjs/operators/scan';
+import { switchMap } from 'rxjs/operators/switchMap';
 
 import { connect, combineProps } from './index';
 
@@ -41,19 +39,21 @@ function sampleController(container) {
   const onMinus$ = new Subject();
   const onPlus$ = new Subject();
 
-  const click$ = Observable.merge(
-    onMinus$.map(() => -1),
-    onPlus$.map(() => +1)
+  const click$ = mergeStatic(
+    onMinus$.pipe(map(() => -1)),
+    onPlus$.pipe(map(() => +1))
   );
   const totalCount$ = container
     .getProp('step')
-    .switchMap(step => click$.map(v => v * step))
-    .startWith(0)
-    .scan((acc, x) => acc + x, 0);
+    .pipe(
+      switchMap(step => click$.pipe(map(v => v * step))),
+      startWith(0),
+      scan((acc, x) => acc + x, 0)
+    );
 
   const title$ = container
     .getProps('step', 'heading')
-    .map(([step, heading]) => `${heading} - ${step}`);
+    .pipe(map(([step, heading]) => `${heading} - ${step}`));
 
   return combineProps({ totalCount$, title$ }, { onMinus$, onPlus$ });
 }

@@ -1,18 +1,16 @@
-import { Observable } from 'rxjs/Observable';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
-import 'rxjs/add/operator/take';
-import 'rxjs/add/operator/do';
-import 'rxjs/add/operator/toArray';
-import 'rxjs/add/observable/of';
-import 'rxjs/add/observable/interval';
+import { take } from 'rxjs/operators/take';
+import { tap } from 'rxjs/operators/tap';
+import { toArray } from 'rxjs/operators/toArray';
+import { of } from 'rxjs/observable/of';
 
 import { combineProps } from './combineProps';
 
 describe('combineProps', () => {
   it('works correctly for no argumenes', done => {
     combineProps()
-      .toArray()
+      .pipe(toArray())
       .subscribe(v => {
         expect(v).toMatchSnapshot();
         done();
@@ -21,7 +19,7 @@ describe('combineProps', () => {
 
   it('works correctly for empty argumenes', done => {
     combineProps({}, {}, {})
-      .toArray()
+      .pipe(toArray())
       .subscribe(v => {
         expect(v).toMatchSnapshot();
         done();
@@ -30,7 +28,7 @@ describe('combineProps', () => {
 
   it('works correctly when props are passed', done => {
     combineProps({}, {}, { a: 1 })
-      .toArray()
+      .pipe(toArray())
       .subscribe(v => {
         expect(v).toMatchSnapshot();
         done();
@@ -40,13 +38,13 @@ describe('combineProps', () => {
   it('works correctly for observables', done => {
     combineProps(
       {
-        a: Observable.of(1),
-        b: Observable.of(2),
+        a: of(1),
+        b: of(2),
       },
       {},
       {}
     )
-      .toArray()
+      .pipe(toArray())
       .subscribe(v => {
         expect(v).toMatchSnapshot();
         done();
@@ -62,7 +60,7 @@ describe('combineProps', () => {
       },
       {}
     )
-      .toArray()
+      .pipe(toArray())
       .subscribe(v => {
         expect(v).toMatchSnapshot();
         v[0].a(123);
@@ -75,14 +73,14 @@ describe('combineProps', () => {
     const a$ = new BehaviorSubject(0);
     combineProps(
       {
-        b$: Observable.of(1),
+        b$: of(1),
       },
       {
         a$,
       },
       {}
     )
-      .toArray()
+      .pipe(toArray())
       .subscribe(v => {
         expect(v).toMatchSnapshot();
         v[0].a(123);
@@ -96,7 +94,7 @@ describe('combineProps', () => {
     const b$ = new BehaviorSubject(0);
     combineProps(
       {
-        a$: Observable.of(1),
+        a$: of(1),
         b$,
       },
       {
@@ -107,9 +105,7 @@ describe('combineProps', () => {
         d: 2,
       }
     )
-      .do(({ onB }) => setTimeout(onB, 1, 1))
-      .take(2)
-      .toArray()
+      .pipe(tap(({ onB }) => setTimeout(onB, 1, 1)), take(2), toArray())
       .subscribe(v => {
         expect(v).toMatchSnapshot();
         done();

@@ -1,6 +1,5 @@
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/observable/of';
-import 'rxjs/add/operator/map';
+import { of } from 'rxjs/observable/of';
+import { map } from 'rxjs/operators/map';
 
 import { combineLatestObj } from './combineLatestObj';
 
@@ -24,10 +23,10 @@ export function combineProps(observables, observers, props) {
   }
 
   if (observables && Object.keys(observables).length > 0) {
-    return combineLatestObj(observables).map(newProps =>
-      Object.assign({}, baseProps, newProps)
+    return combineLatestObj(observables).pipe(
+      map(newProps => Object.assign({}, baseProps, newProps))
     );
   }
 
-  return Observable.of(baseProps);
+  return of(baseProps);
 }

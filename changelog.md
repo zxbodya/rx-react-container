@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.5.0 (2017-10-28)
+
+Start using RxJS lettable operators.
+
 ## 0.4.1 (2017-10-07)
 
 Update react peer dependency. Dev tooling updates

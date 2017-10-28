@@ -1,14 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { mount, render } from 'enzyme';
-import { Observable } from 'rxjs/Observable';
+
 import { Subject } from 'rxjs/Subject';
 
-import 'rxjs/add/observable/merge';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/first';
-import 'rxjs/add/operator/startWith';
-import 'rxjs/add/operator/scan';
+import { merge as mergeStatic } from 'rxjs/observable/merge';
+import { map } from 'rxjs/operators/map';
+import { first } from 'rxjs/operators/first';
+import { startWith } from 'rxjs/operators/startWith';
+import { scan } from 'rxjs/operators/scan';
 
 import { createContainer } from './createContainer';
 
@@ -40,12 +40,10 @@ function createSampleContainer() {
   const plusOne$ = new Subject();
   const minusOne$ = new Subject();
 
-  const totalCount$ = Observable.merge(
-    plusOne$.map(() => +1),
-    minusOne$.map(() => -1)
-  )
-    .startWith(0)
-    .scan((acc, x) => acc + x, 0);
+  const totalCount$ = mergeStatic(
+    plusOne$.pipe(map(() => +1)),
+    minusOne$.pipe(map(() => -1))
+  ).pipe(startWith(0), scan((acc, x) => acc + x, 0));
 
   return createContainer(App, { totalCount$ }, { plusOne$, minusOne$ });
 }
@@ -53,7 +51,7 @@ function createSampleContainer() {
 describe('createContainer', () => {
   it('renders static view', done => {
     createContainer(StaticView)
-      .first()
+      .pipe(first())
       .subscribe(renderApp => {
         const wrapper = mount(renderApp());
         expect(wrapper.find('#root').text()).toBe('Hello');
@@ -64,7 +62,7 @@ describe('createContainer', () => {
 
   it('works', done => {
     createSampleContainer()
-      .first()
+      .pipe(first())
       .subscribe(renderApp => {
         const wrapper = mount(renderApp());
         expect(wrapper.find('#count').text()).toBe('0');
@@ -87,7 +85,7 @@ describe('createContainer', () => {
   });
   it('ssr', done => {
     createSampleContainer()
-      .first()
+      .pipe(first())
       .subscribe(renderApp => {
         const wrapper = render(renderApp());
         expect(wrapper.find('#count').text()).toBe('0');

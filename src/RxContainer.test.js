@@ -1,7 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { mount } from 'enzyme';
-import { Observable, BehaviorSubject } from 'rxjs';
+import { Observable } from 'rxjs/Observable';
+import { of } from 'rxjs/observable/of';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { RxContainer } from './RxContainer';
 
 function StaticView({ heading }) {
@@ -46,7 +48,7 @@ describe('RxContainer', () => {
   });
 
   it('creates new subscription on render with different observable', () => {
-    wrapper.setProps({ observable: Observable.of({ heading: 'Hello' }) });
+    wrapper.setProps({ observable: of({ heading: 'Hello' }) });
     expect(subscribeCount).toBe(1);
     expect(disposeCount).toBe(1);
   });

@@ -1,8 +1,9 @@
 import React from 'react';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/distinctUntilChanged';
-import 'rxjs/add/operator/first';
+import { map } from 'rxjs/operators/map';
+import { distinctUntilChanged } from 'rxjs/operators/distinctUntilChanged';
+import { first } from 'rxjs/operators/first';
+import { share } from 'rxjs/operators/share';
 
 /**
  * @param controller
@@ -21,16 +22,18 @@ export function connect(controller) {
         if (!stateProps$.subscribe) {
           throw new Error('controller should return an observable');
         }
-        this.stateProps$ = stateProps$.share();
+        this.stateProps$ = stateProps$.pipe(share());
       }
 
       componentWillMount() {
         // create subscription to get initial data
         // not creating permanent subscription, because componentWillUnmount is not called server-side
         // which in many cases will result in memory leak
-        this.firstSubscription = this.stateProps$.first().subscribe(props => {
-          this.setState({ props });
-        });
+        this.firstSubscription = this.stateProps$
+          .pipe(first())
+          .subscribe(props => {
+            this.setState({ props });
+          });
       }
 
       componentDidMount() {
@@ -54,7 +57,10 @@ export function connect(controller) {
        * @param key
        */
       getProp(key) {
-        return this.props$.map(props => props[key]).distinctUntilChanged();
+        return this.props$.pipe(
+          map(props => props[key]),
+          distinctUntilChanged()
+        );
       }
 
       /**
@@ -62,15 +68,16 @@ export function connect(controller) {
        * @param keys
        */
       getProps(...keys) {
-        return this.props$
-          .distinctUntilChanged((p, q) => {
+        return this.props$.pipe(
+          distinctUntilChanged((p, q) => {
             for (let i = 0, l = keys.length; i < l; i += 1) {
               const name = keys[i];
               if (p[name] !== q[name]) return false;
             }
             return true;
-          })
-          .map(props => keys.map(key => props[key]));
+          }),
+          map(props => keys.map(key => props[key]))
+        );
       }
 
       render() {

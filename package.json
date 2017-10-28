@@ -1,6 +1,6 @@
 {
   "name": "rx-react-container",
-  "version": "0.4.1",
+  "version": "0.5.0",
   "author": "Bogdan Savluk <savluk.bogdan@gmail.com>",
   "description": "Provides HoC component, and utilities to connect RxJS logic to React Component.",
   "keywords": [
@@ -53,13 +53,13 @@
     "rimraf": "^2.6.1",
     "rollup": "^0.50.0",
     "rollup-plugin-babel": "^3.0.2",
-    "rxjs": "^5.4.3"
+    "rxjs": "^5.5.2"
   },
   "peerDependencies": {
     "babel-runtime": "^6.25.0",
     "prop-types": "^15.5.10",
     "react": "^15.5.4 || ^16.0.0",
-    "rxjs": "^5.3.0"
+    "rxjs": "^5.5.2"
   },
   "prettier": {
     "singleQuote": true,
