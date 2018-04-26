@@ -2,13 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { mount, render } from 'enzyme';
 
-import { Subject } from 'rxjs/Subject';
+import { Subject, merge } from 'rxjs';
 
-import { merge as mergeStatic } from 'rxjs/observable/merge';
-import { map } from 'rxjs/operators/map';
-import { first } from 'rxjs/operators/first';
-import { startWith } from 'rxjs/operators/startWith';
-import { scan } from 'rxjs/operators/scan';
+import { map, first, startWith, scan } from 'rxjs/operators';
 
 import { createContainer } from './createContainer';
 
@@ -40,7 +36,7 @@ function createSampleContainer() {
   const plusOne$ = new Subject();
   const minusOne$ = new Subject();
 
-  const totalCount$ = mergeStatic(
+  const totalCount$ = merge(
     plusOne$.pipe(map(() => +1)),
     minusOne$.pipe(map(() => -1))
   ).pipe(startWith(0), scan((acc, x) => acc + x, 0));

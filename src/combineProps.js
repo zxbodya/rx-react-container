@@ -1,5 +1,5 @@
-import { of } from 'rxjs/observable/of';
-import { map } from 'rxjs/operators/map';
+import { of } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 import { combineLatestObj } from './combineLatestObj';
 

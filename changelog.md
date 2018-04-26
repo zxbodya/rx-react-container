@@ -3,6 +3,7 @@
 ## 0.6.0 (xxxx-xx-xx)
 
 - Remove usage of lifecycle hooks deprecated in react v 16.3 (https://reactjs.org/blog/2018/03/27/update-on-async-rendering.html#adding-event-listeners-or-subscriptions)
+- rxjs v6
 
 ## 0.5.0 (2017-10-28)
 

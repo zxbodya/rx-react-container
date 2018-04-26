@@ -1,4 +1,4 @@
-import { combineLatest } from 'rxjs/observable/combineLatest';
+import { combineLatest } from 'rxjs';
 
 export function combineLatestObj(obj) {
   const sources = [];

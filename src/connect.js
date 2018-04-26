@@ -1,9 +1,6 @@
 import React from 'react';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { map } from 'rxjs/operators/map';
-import { distinctUntilChanged } from 'rxjs/operators/distinctUntilChanged';
-import { first } from 'rxjs/operators/first';
-import { share } from 'rxjs/operators/share';
+import { BehaviorSubject } from 'rxjs';
+import { map, distinctUntilChanged, first, share } from 'rxjs/operators';
 
 /**
  * @param controller

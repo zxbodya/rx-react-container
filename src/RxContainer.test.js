@@ -1,9 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { mount } from 'enzyme';
-import { Observable } from 'rxjs/Observable';
-import { of } from 'rxjs/observable/of';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { BehaviorSubject, Observable, of } from 'rxjs';
 import { RxContainer } from './RxContainer';
 
 function StaticView({ heading }) {

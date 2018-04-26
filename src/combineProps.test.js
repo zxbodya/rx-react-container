@@ -1,9 +1,6 @@
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { BehaviorSubject, of } from 'rxjs';
 
-import { take } from 'rxjs/operators/take';
-import { tap } from 'rxjs/operators/tap';
-import { toArray } from 'rxjs/operators/toArray';
-import { of } from 'rxjs/observable/of';
+import { take, tap, toArray } from 'rxjs/operators';
 
 import { combineProps } from './combineProps';
 

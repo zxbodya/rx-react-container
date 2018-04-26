@@ -1,10 +1,7 @@
 import React from 'react';
 
-import { defer } from 'rxjs/observable/defer';
-import { tap } from 'rxjs/operators/tap';
-import { mapTo } from 'rxjs/operators/mapTo';
-import { distinctUntilChanged } from 'rxjs/operators/distinctUntilChanged';
-import { share } from 'rxjs/operators/share';
+import { defer } from 'rxjs';
+import { tap, mapTo, distinctUntilChanged, share } from 'rxjs/operators';
 
 import { RxContainer } from './RxContainer';
 import { combineProps } from './combineProps';

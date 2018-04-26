@@ -19,6 +19,7 @@
   },
   "main": "dist/rx-react-container.cjs.js",
   "module": "dist/rx-react-container.esm.js",
+  "sideEffects": false,
   "scripts": {
     "lint": "eslint ./src/",
     "build": "rimraf dist && rollup -c",
@@ -53,13 +54,13 @@
     "rimraf": "^2.6.1",
     "rollup": "^0.58.1",
     "rollup-plugin-babel": "^3.0.3",
-    "rxjs": "^5.5.10"
+    "rxjs": "^6.0.0"
   },
   "peerDependencies": {
     "babel-runtime": "^6.25.0",
-    "prop-types": "^15.5.10",
+    "prop-types": "^15.6.1",
     "react": "^16.3.2",
-    "rxjs": "^5.5.2"
+    "rxjs": "^6.0.0"
   },
   "prettier": {
     "singleQuote": true,

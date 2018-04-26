@@ -3,13 +3,8 @@ import PropTypes from 'prop-types';
 
 import { mount, render } from 'enzyme';
 
-import { Subject } from 'rxjs/Subject';
-
-import { merge as mergeStatic } from 'rxjs/observable/merge';
-import { map } from 'rxjs/operators/map';
-import { startWith } from 'rxjs/operators/startWith';
-import { scan } from 'rxjs/operators/scan';
-import { switchMap } from 'rxjs/operators/switchMap';
+import { Subject, merge } from 'rxjs';
+import { map, startWith, scan, switchMap } from 'rxjs/operators';
 
 import { connect, combineProps } from './index';
 
@@ -39,7 +34,7 @@ function sampleController(container) {
   const onMinus$ = new Subject();
   const onPlus$ = new Subject();
 
-  const click$ = mergeStatic(
+  const click$ = merge(
     onMinus$.pipe(map(() => -1)),
     onPlus$.pipe(map(() => +1))
   );
