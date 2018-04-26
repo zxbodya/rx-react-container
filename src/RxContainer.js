@@ -2,9 +2,19 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 export class RxContainer extends React.Component {
+  static getDerivedStateFromProps(nextProps, prevState) {
+    if (nextProps.observable !== prevState.observable) {
+      return {
+        props: nextProps.initialState,
+        observable: nextProps.observable,
+      };
+    }
+    return null;
+  }
+
   constructor(props, context) {
     super(props, context);
-    this.state = { props: props.initialState };
+    this.state = { props: props.initialState, observable: props.observable };
     this.subscription = null;
   }
 
@@ -12,16 +22,15 @@ export class RxContainer extends React.Component {
     // create subscription in componentDidMount instead of componentWillMount
     // because componentWillUnmount is not called server-side
     // which in many cases will result in memory leak
-    this.subscription = this.props.observable.subscribe(props => {
+    this.subscription = this.state.observable.subscribe(props => {
       this.setState({ props });
     });
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.observable !== this.props.observable) {
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState.observable !== this.state.observable) {
       this.subscription.unsubscribe();
-      this.setState({ props: nextProps.initialState });
-      this.subscription = nextProps.observable.subscribe(props => {
+      this.subscription = this.props.observable.subscribe(props => {
         this.setState({ props });
       });
     }

@@ -17,23 +17,22 @@ export function connect(controller) {
         this.state = { props: null };
         this.props$ = new BehaviorSubject(props);
         this.subscription = null;
-        this.firstSubscription = null;
         const stateProps$ = controller(this);
         if (!stateProps$.subscribe) {
           throw new Error('controller should return an observable');
         }
         this.stateProps$ = stateProps$.pipe(share());
-      }
-
-      componentWillMount() {
         // create subscription to get initial data
         // not creating permanent subscription, because componentWillUnmount is not called server-side
         // which in many cases will result in memory leak
-        this.firstSubscription = this.stateProps$
-          .pipe(first())
-          .subscribe(props => {
-            this.setState({ props });
-          });
+        this.firstSubscription = this.stateProps$.pipe(first()).subscribe(p => {
+          const newState = { props: p };
+          if (this.state.props !== null) {
+            this.setState(newState);
+          } else {
+            this.state = newState;
+          }
+        });
       }
 
       componentDidMount() {
@@ -44,8 +43,8 @@ export function connect(controller) {
         this.firstSubscription.unsubscribe();
       }
 
-      componentWillReceiveProps(nextProps) {
-        this.props$.next(nextProps);
+      componentDidUpdate() {
+        this.props$.next(this.props);
       }
 
       componentWillUnmount() {
