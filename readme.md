@@ -81,8 +81,9 @@ Container component has state - it is equal to latest combination of data from `
 import React from 'react';
 import { render } from 'react-dom';
 
-import { Subject, Observable } from 'rxjs';
+import { Subject, merge } from 'rxjs';
 import { connect, combineProps } from 'rx-react-container';
+import { map, scan, switchMap, startWith } from 'rxjs/operators';
 
 function App({ onMinus, onPlus, totalCount, step }) {
   return (
@@ -98,17 +99,18 @@ function appController(container) {
   const onMinus$ = new Subject();
   const onPlus$ = new Subject();
 
-  const click$ = Observable
-    .merge(
-      onMinus$.map(() => -1),
-      onPlus$.map(() => +1)
+  const click$ =
+    merge(
+      onMinus$.pipe(map(() => -1)),
+      onPlus$.pipe(map(() => +1))
     );
   const step$ = container.getProp('step');
-  
-  const totalCount$ = step$
-    .switchMap(step => click$.map(v => v * step))
-    .startWith(0)
-    .scan((acc, x) => acc + x, 0);
+
+  const totalCount$ = step$.pipe(
+    switchMap(step => click$.pipe(map(v => v * step))),
+    startWith(0),
+    scan((acc, x) => acc + x, 0)
+  );
 
   return combineProps({ totalCount$, step$ }, { onMinus$, onPlus$ });
 }
