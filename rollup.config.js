@@ -4,7 +4,7 @@ import pkg from './package.json';
 export default [
   {
     entry: 'src/index.js',
-    external: ['rxjs', 'prop-types', 'react'],
+    external: ['rxjs', 'prop-types', 'react', 'hoist-non-react-statics'],
     targets: [
       { dest: pkg.main, format: 'cjs' },
       { dest: pkg.module, format: 'es' },

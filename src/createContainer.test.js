@@ -39,7 +39,10 @@ function createSampleContainer() {
   const totalCount$ = merge(
     plusOne$.pipe(map(() => +1)),
     minusOne$.pipe(map(() => -1))
-  ).pipe(startWith(0), scan((acc, x) => acc + x, 0));
+  ).pipe(
+    startWith(0),
+    scan((acc, x) => acc + x, 0)
+  );
 
   return createContainer(App, { totalCount$ }, { plusOne$, minusOne$ });
 }

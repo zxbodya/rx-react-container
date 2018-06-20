@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.6.1 (2018-06-21)
+
+- hoist-non-react-statics (#8) (Pavlos Vinieratos)
+- deps updates
+
 ## 0.6.0 (2018-04-26)
 
 - Remove usage of lifecycle hooks deprecated in react v 16.3 (https://reactjs.org/blog/2018/03/27/update-on-async-rendering.html#adding-event-listeners-or-subscriptions)

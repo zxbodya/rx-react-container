@@ -2,21 +2,22 @@
   "presets": [
     "react",
     [
-      "es2015",
+      "env",
       {
-        "loose": true,
         "modules": false
       }
     ]
   ],
   "plugins": [
-    "transform-runtime"
+    "transform-runtime",
+    "transform-class-properties",
+    "transform-object-rest-spread"
   ],
   "env": {
     "test": {
       "presets": [
         "react",
-        "es2015"
+        "env"
       ]
     }
   }

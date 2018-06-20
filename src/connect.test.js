@@ -42,13 +42,11 @@ function sampleController(container) {
     onMinus$.pipe(map(() => -1)),
     onPlus$.pipe(map(() => +1))
   );
-  const totalCount$ = container
-    .getProp('step')
-    .pipe(
-      switchMap(step => click$.pipe(map(v => v * step))),
-      startWith(0),
-      scan((acc, x) => acc + x, 0)
-    );
+  const totalCount$ = container.getProp('step').pipe(
+    switchMap(step => click$.pipe(map(v => v * step))),
+    startWith(0),
+    scan((acc, x) => acc + x, 0)
+  );
 
   const title$ = container
     .getProps('step', 'heading')

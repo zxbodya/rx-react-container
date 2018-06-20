@@ -102,7 +102,11 @@ describe('combineProps', () => {
         d: 2,
       }
     )
-      .pipe(tap(({ onB }) => setTimeout(onB, 1, 1)), take(2), toArray())
+      .pipe(
+        tap(({ onB }) => setTimeout(onB, 1, 1)),
+        take(2),
+        toArray()
+      )
       .subscribe(v => {
         expect(v).toMatchSnapshot();
         done();
