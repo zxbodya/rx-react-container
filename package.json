@@ -74,5 +74,8 @@
     "roots": [
       "src"
     ]
+  },
+  "dependencies": {
+    "hoist-non-react-statics": "^2.5.5"
   }
 }

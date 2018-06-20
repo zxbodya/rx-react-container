@@ -1,3 +1,4 @@
+import hoistStatics from 'hoist-non-react-statics';
 import React from 'react';
 import { BehaviorSubject } from 'rxjs';
 import { map, distinctUntilChanged, first, share } from 'rxjs/operators';
@@ -90,6 +91,6 @@ export function connect(controller) {
       }
     }
 
-    return Container;
+    return hoistStatics(Container, Component);
   };
 }

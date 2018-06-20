@@ -30,6 +30,10 @@ App.propTypes = {
   title: PropTypes.string.isRequired,
 };
 
+App.navStatic = {
+  header: 'ok',
+};
+
 function sampleController(container) {
   const onMinus$ = new Subject();
   const onPlus$ = new Subject();
@@ -111,6 +115,11 @@ test('connect - displayName', () => {
   expect(Cmp2.displayName).toBe(undefined);
 
   process.env.NODE_ENV = NODE_ENV;
+});
+
+test('connect - keep component statics', () => {
+  // eslint-disable-next-line prefer-arrow-callback
+  expect(AppContainer.navStatic).toEqual({ header: 'ok' });
 });
 
 test('server side rendering', () => {
