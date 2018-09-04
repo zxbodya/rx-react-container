@@ -12,11 +12,11 @@ function App({ onMinus, onPlus, totalCount, title }) {
   return (
     <div>
       <h1 id="title">{title}</h1>
-      <button onClick={onMinus} id="minus">
+      <button type="button" onClick={onMinus} id="minus">
         -
       </button>
       [<span id="count">{totalCount}</span>]
-      <button onClick={onPlus} id="plus">
+      <button type="button" onClick={onPlus} id="plus">
         +
       </button>
     </div>

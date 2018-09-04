@@ -1,6 +1,6 @@
 {
   "name": "rx-react-container",
-  "version": "0.6.1",
+  "version": "0.6.2",
   "author": "Bogdan Savluk <savluk.bogdan@gmail.com>",
   "description": "Provides HoC component, and utilities to connect RxJS logic to React Component.",
   "keywords": [
@@ -28,38 +28,39 @@
     "prepublish": "npm run build"
   },
   "devDependencies": {
-    "babel-core": "^6.26.3",
-    "babel-jest": "^23.0.1",
-    "babel-plugin-transform-class-properties": "^6.24.1",
-    "babel-plugin-transform-object-rest-spread": "^6.26.0",
-    "babel-plugin-transform-runtime": "^6.23.0",
-    "babel-preset-env": "^1.7.0",
-    "babel-preset-react": "^6.24.1",
-    "babel-runtime": "^6.25.0",
+    "@babel/core": "^7.0.0",
+    "@babel/plugin-proposal-class-properties": "^7.0.0",
+    "@babel/plugin-proposal-object-rest-spread": "^7.0.0",
+    "@babel/plugin-transform-runtime": "^7.0.0",
+    "@babel/preset-env": "^7.0.0",
+    "@babel/preset-react": "^7.0.0",
+    "@babel/runtime": "^7.0.0",
+    "babel-core": "^7.0.0-bridge.0",
+    "babel-jest": "^23.4.2",
     "codecov.io": "^0.1.6",
-    "enzyme": "^3.3.0",
-    "enzyme-adapter-react-16": "^1.1.1",
-    "eslint": "^4.19.1",
-    "eslint-config-airbnb": "^16.0.0",
-    "eslint-config-prettier": "^2.6.0",
-    "eslint-plugin-import": "^2.12.0",
+    "enzyme": "^3.5.1",
+    "enzyme-adapter-react-16": "^1.4.0",
+    "eslint": "^5.5.0",
+    "eslint-config-airbnb": "^17.1.0",
+    "eslint-config-prettier": "^3.0.1",
+    "eslint-plugin-import": "^2.14.0",
     "eslint-plugin-jsx-a11y": "^6.0.2",
     "eslint-plugin-prettier": "^2.6.0",
-    "eslint-plugin-react": "^7.9.1",
-    "jest": "^23.1.0",
-    "prettier": "^1.13.5",
+    "eslint-plugin-react": "^7.11.1",
+    "jest": "^23.5.0",
+    "prettier": "^1.14.2",
     "prop-types": "^15.6.2",
     "raf": "^3.3.2",
-    "react": "^16.4.1",
-    "react-dom": "^16.4.1",
-    "react-test-renderer": "16.4.1",
+    "react": "^16.4.2",
+    "react-dom": "^16.4.2",
+    "react-test-renderer": "16.4.2",
     "rimraf": "^2.6.1",
-    "rollup": "^0.61.0",
-    "rollup-plugin-babel": "^3.0.3",
-    "rxjs": "^6.2.1"
+    "rollup": "^0.65.0",
+    "rollup-plugin-babel": "^4.0.3",
+    "rxjs": "^6.3.1"
   },
   "peerDependencies": {
-    "babel-runtime": "^6.25.0",
+    "@babel/runtime": "^7.0.0",
     "prop-types": "^15.6.1",
     "react": "^16.3.2",
     "rxjs": "^6.2.0"
@@ -78,6 +79,6 @@
     ]
   },
   "dependencies": {
-    "hoist-non-react-statics": "^2.5.5"
+    "hoist-non-react-statics": "^3.0.1"
   }
 }

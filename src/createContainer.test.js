@@ -15,11 +15,11 @@ function StaticView() {
 function App({ plusOne, minusOne, totalCount }) {
   return (
     <div>
-      <button onClick={minusOne} id="minus">
+      <button type="button" onClick={minusOne} id="minus">
         -
       </button>
       [<span id="count">{totalCount}</span>]
-      <button onClick={plusOne} id="plus">
+      <button type="button" onClick={plusOne} id="plus">
         +
       </button>
     </div>
