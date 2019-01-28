@@ -1,4 +1,4 @@
-import { of } from 'rxjs';
+import { Observable, Observer, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { combineLatestObj } from './combineLatestObj';
@@ -11,12 +11,16 @@ import { combineLatestObj } from './combineLatestObj';
  * @param {Object.<string, Observer>} observers=
  * @param {Object} props=
  */
-export function combineProps(observables, observers, props) {
+export function combineProps(
+  observables?: { [k: string]: Observable<any> },
+  observers?: { [k: string]: Observer<any> },
+  props?: { [k: string]: any }
+) {
   const baseProps = Object.assign({}, props);
 
   if (observers) {
     Object.keys(observers).forEach(key => {
-      baseProps[key.replace(/\$$/, '')] = value => {
+      baseProps[key.replace(/\$$/, '')] = (value: any) => {
         observers[key].next(value);
       };
     });

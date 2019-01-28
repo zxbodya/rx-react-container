@@ -1,14 +1,21 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import * as PropTypes from 'prop-types';
+import * as React from 'react';
 
 import { mount, render } from 'enzyme';
 
-import { Subject, merge } from 'rxjs';
-import { map, startWith, scan, switchMap } from 'rxjs/operators';
+import { merge, Observable, of, Subject } from 'rxjs';
+import { map, scan, startWith, switchMap } from 'rxjs/operators';
 
-import { connect, combineProps } from './index';
+import { combineProps, connect, RxReactContainer } from '.';
 
-function App({ onMinus, onPlus, totalCount, title }) {
+interface AppProps {
+  onMinus: () => void;
+  onPlus: () => void;
+  totalCount: number;
+  title: string;
+}
+
+function App({ onMinus, onPlus, totalCount, title }: AppProps) {
   return (
     <div>
       <h1 id="title">{title}</h1>
@@ -23,18 +30,16 @@ function App({ onMinus, onPlus, totalCount, title }) {
   );
 }
 
-App.propTypes = {
-  onMinus: PropTypes.func.isRequired,
-  onPlus: PropTypes.func.isRequired,
-  totalCount: PropTypes.number.isRequired,
-  title: PropTypes.string.isRequired,
-};
-
 App.navStatic = {
   header: 'ok',
 };
 
-function sampleController(container) {
+interface ContainerProps {
+  step: number;
+  heading: string;
+}
+
+function sampleController(container: RxReactContainer<ContainerProps>) {
   const onMinus$ = new Subject();
   const onPlus$ = new Subject();
 
@@ -52,13 +57,16 @@ function sampleController(container) {
     .getProps('step', 'heading')
     .pipe(map(([step, heading]) => `${heading} - ${step}`));
 
-  return combineProps({ totalCount$, title$ }, { onMinus$, onPlus$ });
+  return combineProps(
+    { totalCount$, title$ },
+    { onMinus$, onPlus$ }
+  ) as Observable<AppProps>;
 }
 
-const AppContainer = connect(sampleController)(App);
+const AppContainer = connect<ContainerProps, AppProps>(sampleController)(App);
 
 test('connect', done => {
-  const wrapper = mount(<AppContainer step="1" heading="Test" />);
+  const wrapper = mount(<AppContainer step={1} heading="Test" />);
   expect(wrapper.find('#count').text()).toBe('0');
   expect(wrapper.find('#title').text()).toBe('Test - 1');
 
@@ -95,21 +103,27 @@ test('connect', done => {
 
 test('connect to throw if no observable returned', () => {
   expect(() => {
+    // @ts-ignore
     const Cmp = connect(() => 0)(() => null);
+    // @ts-ignore
     return new Cmp({}, {});
   }).toThrow('controller should return an observable');
 });
 
 test('connect - displayName', () => {
   // eslint-disable-next-line prefer-arrow-callback
-  const Cmp1 = connect(() => 0)(function Name1() {});
+  const Cmp1 = connect(() => of({}))(function Name1() {
+    return null;
+  });
   expect(Cmp1.displayName).toBe('connect(Name1)');
 
   const NODE_ENV = process.env.NODE_ENV;
   process.env.NODE_ENV = 'production';
 
   // eslint-disable-next-line prefer-arrow-callback
-  const Cmp2 = connect(() => 0)(function Name2() {});
+  const Cmp2 = connect(() => of({}))(function Name2() {
+    return null;
+  });
   expect(Cmp2.displayName).toBe(undefined);
 
   process.env.NODE_ENV = NODE_ENV;
@@ -117,11 +131,12 @@ test('connect - displayName', () => {
 
 test('connect - keep component statics', () => {
   // eslint-disable-next-line prefer-arrow-callback
+  // @ts-ignore
   expect(AppContainer.navStatic).toEqual({ header: 'ok' });
 });
 
 test('server side rendering', () => {
-  const wrapper = render(<AppContainer step="1" heading="Test" />);
+  const wrapper = render(<AppContainer step={1} heading="Test" />);
   expect(wrapper.find('#count').text()).toBe('0');
   expect(wrapper.find('#title').text()).toBe('Test - 1');
 });

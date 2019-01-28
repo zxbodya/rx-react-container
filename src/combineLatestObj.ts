@@ -1,8 +1,8 @@
-import { combineLatest } from 'rxjs';
+import { combineLatest, Observable } from 'rxjs';
 
-export function combineLatestObj(obj) {
+export function combineLatestObj(obj: { [k: string]: Observable<any> }) {
   const sources = [];
-  const keys = [];
+  const keys: string[] = [];
   // eslint-disable-next-line no-restricted-syntax
   for (const key in obj) {
     /* istanbul ignore else  */
@@ -12,7 +12,7 @@ export function combineLatestObj(obj) {
     }
   }
   return combineLatest(sources, (...args) => {
-    const combination = {};
+    const combination: { [k: string]: any } = {};
     for (let i = args.length - 1; i >= 0; i -= 1) {
       combination[keys[i]] = args[i];
     }

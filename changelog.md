@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.7.0 (2018-01-28)
+
+- TypeScript
+- remove deprecated `createContainer`
+
 ## 0.6.2 (2018-09-04)
 
 - Babel 7

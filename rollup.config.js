@@ -1,20 +1,14 @@
-import babel from 'rollup-plugin-babel';
-import pkg from './package.json';
+const typescript = require('rollup-plugin-typescript2');
+const pkg = require('./package.json');
 
-export default [
-  {
-    entry: 'src/index.js',
-    external: ['rxjs', 'prop-types', 'react', 'hoist-non-react-statics'],
-    targets: [
-      { dest: pkg.main, format: 'cjs' },
-      { dest: pkg.module, format: 'es' },
-    ],
-    plugins: [
-      babel({
-        exclude: ['node_modules/**'],
-        runtimeHelpers: true,
-      }),
-    ],
-    sourceMap: true,
-  },
-];
+module.exports = {
+  input: 'src/index.ts',
+  external: ['rxjs', 'prop-types', 'react', 'hoist-non-react-statics', 'tslib'],
+  output: [
+    { file: pkg.main, sourcemap: true, format: 'cjs' },
+    { file: pkg.module, sourcemap: true,  format: 'es' },
+  ],
+  plugins: [
+    typescript({ cacheRoot: `${require('temp-dir')}/.rpt2_cache` }),
+  ],
+};

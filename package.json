@@ -1,6 +1,6 @@
 {
   "name": "rx-react-container",
-  "version": "0.6.2",
+  "version": "0.7.0",
   "author": "Bogdan Savluk <savluk.bogdan@gmail.com>",
   "description": "Provides HoC component, and utilities to connect RxJS logic to React Component.",
   "keywords": [
@@ -15,61 +15,58 @@
   },
   "license": "MIT",
   "engines": {
-    "node": ">=0.12.0"
+    "node": ">=8.9.0"
   },
-  "main": "dist/rx-react-container.cjs.js",
+  "main": "dist/index.js",
   "module": "dist/rx-react-container.esm.js",
+  "typings": "dist/index.d.ts",
   "sideEffects": false,
   "scripts": {
-    "lint": "eslint ./src/",
-    "build": "rimraf dist && rollup -c",
+    "lint": "tslint --project .",
     "cover": "jest --coverage",
     "test": "jest",
+    "build": "rimraf dist && rollup -c",
+    "watch": "rollup -c -w",
     "prepublish": "npm run build"
   },
   "devDependencies": {
-    "@babel/core": "^7.0.0",
-    "@babel/plugin-proposal-class-properties": "^7.0.0",
-    "@babel/plugin-proposal-object-rest-spread": "^7.0.0",
-    "@babel/plugin-transform-runtime": "^7.0.0",
-    "@babel/preset-env": "^7.0.0",
-    "@babel/preset-react": "^7.0.0",
-    "@babel/runtime": "^7.0.0",
-    "babel-core": "^7.0.0-bridge.0",
-    "babel-jest": "^23.4.2",
+    "@types/enzyme": "^3.1.15",
+    "@types/jest": "^23.3.10",
+    "@types/prop-types": "^15.5.8",
+    "@types/react": "^16.7.21",
     "codecov.io": "^0.1.6",
-    "enzyme": "^3.5.1",
-    "enzyme-adapter-react-16": "^1.4.0",
-    "eslint": "^5.5.0",
-    "eslint-config-airbnb": "^17.1.0",
-    "eslint-config-prettier": "^3.0.1",
-    "eslint-plugin-import": "^2.14.0",
-    "eslint-plugin-jsx-a11y": "^6.0.2",
-    "eslint-plugin-prettier": "^2.6.0",
-    "eslint-plugin-react": "^7.11.1",
-    "jest": "^23.5.0",
-    "prettier": "^1.14.2",
+    "enzyme": "^3.8.0",
+    "enzyme-adapter-react-16": "^1.8.0",
+    "jest": "^23.6.0",
+    "prettier": "^1.15.3",
     "prop-types": "^15.6.2",
-    "raf": "^3.3.2",
-    "react": "^16.4.2",
-    "react-dom": "^16.4.2",
-    "react-test-renderer": "16.4.2",
-    "rimraf": "^2.6.1",
-    "rollup": "^0.65.0",
-    "rollup-plugin-babel": "^4.0.3",
-    "rxjs": "^6.3.1"
+    "raf": "^3.4.1",
+    "react": "^16.7.0",
+    "react-dom": "^16.7.0",
+    "react-test-renderer": "16.7.0",
+    "rimraf": "^2.6.3",
+    "rollup": "^1.1.2",
+    "rollup-plugin-typescript2": "^0.19.2",
+    "rxjs": "^6.3.3",
+    "temp-dir": "^1.0.0",
+    "ts-jest": "^23.10.5",
+    "tslint": "^5.12.0",
+    "tslint-config-prettier": "^1.17.0",
+    "tslint-plugin-prettier": "^2.0.1",
+    "typescript": "^3.2.1"
   },
   "peerDependencies": {
-    "@babel/runtime": "^7.0.0",
     "prop-types": "^15.6.1",
     "react": "^16.3.2",
-    "rxjs": "^6.2.0"
+    "rxjs": "^6.2.0",
+    "tslib": "^1.9.3"
   },
   "prettier": {
     "singleQuote": true,
     "trailingComma": "es5"
   },
   "jest": {
+    "preset": "ts-jest",
     "setupFiles": [
       "raf/polyfill",
       "./setupJest"
@@ -79,6 +76,6 @@
     ]
   },
   "dependencies": {
-    "hoist-non-react-statics": "^3.0.1"
+    "hoist-non-react-statics": "^3.3.0"
   }
 }

@@ -1,16 +1,31 @@
+// @ts-ignore
 import hoistStatics from 'hoist-non-react-statics';
-import React from 'react';
-import { BehaviorSubject } from 'rxjs';
-import { map, distinctUntilChanged, first, share } from 'rxjs/operators';
+import * as React from 'react';
+import { ComponentType } from 'react';
+import { BehaviorSubject, Observable, Subscription } from 'rxjs';
+import { distinctUntilChanged, first, map, share } from 'rxjs/operators';
 
+export interface RxReactContainer<Props = {}> extends React.Component<Props> {
+  props$: Observable<Props>;
+  getProp: (key: string) => Observable<any>;
+  getProps: (...keys: string[]) => Observable<any[]>;
+}
 /**
  * @param controller
  * @return {function(*=)}
  */
-export function connect(controller) {
-  return Component => {
-    class Container extends React.Component {
-      constructor(props, context) {
+export function connect<Props, StateProps>(
+  controller: (container: RxReactContainer<Props>) => Observable<StateProps>
+) {
+  return (Component: ComponentType<StateProps>): ComponentType<Props> => {
+    class Container extends React.Component<Props, { props: StateProps | null }>
+      implements RxReactContainer<Props> {
+      public props$: BehaviorSubject<Props>;
+      private subscription: Subscription | null;
+      private stateProps$: Observable<StateProps>;
+      private firstSubscription: Subscription;
+
+      constructor(props: Props, context: object) {
         super(props, context);
         this.state = { props: null };
         this.props$ = new BehaviorSubject(props);
@@ -33,7 +48,7 @@ export function connect(controller) {
         });
       }
 
-      componentDidMount() {
+      public componentDidMount() {
         this.subscription = this.stateProps$.subscribe(props => {
           this.setState({ props });
         });
@@ -41,21 +56,26 @@ export function connect(controller) {
         this.firstSubscription.unsubscribe();
       }
 
-      componentDidUpdate() {
+      public componentDidUpdate() {
         this.props$.next(this.props);
       }
 
-      componentWillUnmount() {
-        this.subscription.unsubscribe();
+      public componentWillUnmount() {
+        if (this.subscription) {
+          this.subscription.unsubscribe();
+        }
       }
 
       /**
        * Observable with prop by key
        * @param key
        */
-      getProp(key) {
+      public getProp(key: string) {
         return this.props$.pipe(
-          map(props => props[key]),
+          map(
+            // @ts-ignore
+            props => props[key]
+          ),
           distinctUntilChanged()
         );
       }
@@ -64,20 +84,28 @@ export function connect(controller) {
        * Observable with props by keys
        * @param keys
        */
-      getProps(...keys) {
+      public getProps(...keys: string[]) {
         return this.props$.pipe(
           distinctUntilChanged((p, q) => {
             for (let i = 0, l = keys.length; i < l; i += 1) {
               const name = keys[i];
-              if (p[name] !== q[name]) return false;
+              // @ts-ignore
+              if (p[name] !== q[name]) {
+                return false;
+              }
             }
             return true;
           }),
-          map(props => keys.map(key => props[key]))
+          map(props =>
+            keys.map(
+              // @ts-ignore
+              key => props[key]
+            )
+          )
         );
       }
 
-      render() {
+      public render() {
         return (
           this.state.props && React.createElement(Component, this.state.props)
         );
@@ -87,6 +115,7 @@ export function connect(controller) {
     if (process.env.NODE_ENV !== 'production') {
       const name = Component.displayName || Component.name;
       if (name) {
+        // @ts-ignore
         Container.displayName = `connect(${name})`;
       }
     }
