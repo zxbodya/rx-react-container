@@ -38,7 +38,7 @@ import createContainer from 'rx-react-container';
 
 Basic usage:
 
-```
+```ts
 const ContainerComponent = connect(
   controller: container => Observable<WrappedComponentProps>
 )(WrappedComponent)

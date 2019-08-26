@@ -9,13 +9,13 @@ Array [
 ]
 `;
 
-exports[`combineProps works correctly for empty argumenes 1`] = `
+exports[`combineProps works correctly for empty arguments 1`] = `
 Array [
   Object {},
 ]
 `;
 
-exports[`combineProps works correctly for no argumenes 1`] = `
+exports[`combineProps works correctly for no arguments 1`] = `
 Array [
   Object {},
 ]

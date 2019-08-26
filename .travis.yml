@@ -12,4 +12,4 @@ script:
   - yarn run lint && yarn run cover
 
 after_success:
-  - cat ./coverage/coverage-final.json | ./node_modules/codecov.io/bin/codecov.io.js
+  - ./node_modules/.bin/codecov

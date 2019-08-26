@@ -5,7 +5,7 @@ import { take, tap, toArray } from 'rxjs/operators';
 import { combineProps } from './combineProps';
 
 describe('combineProps', () => {
-  it('works correctly for no argumenes', done => {
+  it('works correctly for no arguments', done => {
     combineProps()
       .pipe(toArray())
       .subscribe(v => {
@@ -14,7 +14,7 @@ describe('combineProps', () => {
       });
   });
 
-  it('works correctly for empty argumenes', done => {
+  it('works correctly for empty arguments', done => {
     combineProps({}, {}, {})
       .pipe(toArray())
       .subscribe(v => {
