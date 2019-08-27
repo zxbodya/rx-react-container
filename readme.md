@@ -13,43 +13,60 @@ Works by wrapping React Component into container that:
 
 If you are interested in history behind this - look at [gist about it](https://gist.github.com/zxbodya/20c63681d45a049df3fc).
 
-First place where it was already used is [reactive-widgets](https://github.com/zxbodya/reactive-widgets) project.
+First project where it was used: [reactive-widgets](https://github.com/zxbodya/reactive-widgets)
 
 ### Installation
 
 `npm install rx-react-container --save`
 
-### Documentation
+### Usage
 
-Basic usage:
+Currently there are two ways of using it:
+ - with high order components
+ - with hooks
+
+High order components:
 
 ```ts
 const ContainerComponent = connect(
-  controller: container => Observable<WrappedComponentProps>
+  controller: (propsHelper) => Observable<ResultProps>
 )(WrappedComponent)
 ```
 
-This will create HoC combining controller and React Component.
+Hooks:
 
-`controller` here is a function creating observable of properties to be passed to wrapped component.
-It is called on component creation and receives container component instance as argument.
- 
-container instance provides few helper methods to access props as observables:
+*Warning: hooks version is very new, consider it experimental*
+
+```ts
+const resultProps = useRxController(
+  controller: (propsHelper) => Observable<ResultProps>,
+  props
+);
+```
+
+In theory, both are equivalent, while hooks one is more compact/flexible.
+
+In both cases `controller` is function creating observable of properties to be rendered.
+
+`propsHelper` argument of it provides few helper methods to access props as observables:
 
 - `getProp(name)` - returning observable of distinct values of specified property
 - `getProps(...names)` - returning observable of distinct arrays of values for specified properties
 
-Also there is helper function to combine data into single observable (meant to be used in controller):
+also there are fields with current properties(in some cases this is useful, but generally - better to use helper methods above):
 
-`combineProps(observables, observers, props)` 
+- `props$` - observable with current properties 
+- `props` -  getter to get current properties of wrapper component, or what was passed to hook when rendering
+
+To help combining various things into result observable, library also provides helper function to combine data into single observable:
+
+`combineProps(observables, observers, otherProps)` 
 
 Where:
 
 - `observables` object with observables with data for component
 - `observers` object with observers to be passed as callbacks to component 
 - `props` object with props to pass directly to component 
-
-Container component has state - it is equal to latest combination of data from `observables`, and is updated when state changes.
  
 ### Example:
 
@@ -60,6 +77,7 @@ import { render } from 'react-dom';
 import { Subject, merge } from 'rxjs';
 import { connect, combineProps } from 'rx-react-container';
 import { map, scan, switchMap, startWith } from 'rxjs/operators';
+import {useRxController} from './useRxController';
 
 function App({ onMinus, onPlus, totalCount, step }) {
   return (
@@ -93,6 +111,19 @@ function appController(container) {
 }
 
 const AppContainer = connect(appController)(App);
+
+// same thing with hooks
+function HookApp(props) {
+  const state = useRxController(appController, props);
+  if(!state) return null;
+  const { onMinus, onPlus, totalCount, step } = state;
+  return (
+    <div>
+      <button onClick={onMinus}>-{step}</button>[<span>{totalCount}</span>]
+      <button onClick={onPlus}>+{step}</button>
+    </div>
+  );
+}
 
 const appElement = document.getElementById('app');
 render(<AppContainer step="1" />, appElement);

@@ -3,38 +3,46 @@ import hoistStatics from 'hoist-non-react-statics';
 import * as React from 'react';
 import { ComponentType } from 'react';
 import { BehaviorSubject, Observable, Subscription } from 'rxjs';
-import { distinctUntilChanged, first, map, share } from 'rxjs/operators';
+import { first, share } from 'rxjs/operators';
+import { createGetProp, createGetProps, PropsHelper } from './PropsHelper';
 
-export interface RxReactContainer<Props> extends React.Component<Props> {
-  props$: Observable<Props>;
-  getProp<K extends keyof Props>(key: K): Observable<Props[K]>;
-  getProps<K extends Array<keyof Props>>(
-    ...keys: K
-  ): Observable<
-    { [Ki in keyof K]: K[Ki] extends keyof Props ? Props[K[Ki]] : never }
-  >;
-}
 /**
- * @param controller
- * @return {function(*=)}
+ * @deprecated alias to PropsHelper
  */
+export type RxReactContainer<Props> = PropsHelper<Props>;
+
 export function connect<Props, StateProps>(
-  controller: (container: RxReactContainer<Props>) => Observable<StateProps>
+  controller: (container: PropsHelper<Props>) => Observable<StateProps>
 ) {
   return (Component: ComponentType<StateProps>): ComponentType<Props> => {
-    class Container extends React.Component<Props, { props: StateProps | null }>
-      implements RxReactContainer<Props> {
+    class Container extends React.Component<
+      Props,
+      { props: StateProps | null }
+    > {
       public props$: BehaviorSubject<Props>;
       private subscription: Subscription | null;
       private stateProps$: Observable<StateProps>;
       private firstSubscription: Subscription;
+      public getProp: PropsHelper<Props>['getProp'];
+      public getProps: PropsHelper<Props>['getProps'];
 
       constructor(props: Props, context: object) {
         super(props, context);
         this.state = { props: null };
-        this.props$ = new BehaviorSubject(props);
+        const props$ = new BehaviorSubject(props);
+        this.props$ = props$;
+        this.getProp = createGetProp(this.props$);
+        this.getProps = createGetProps(this.props$);
         this.subscription = null;
-        const stateProps$ = controller(this);
+        const propsHelper: PropsHelper<Props> = {
+          get props(): Props {
+            return props$.getValue();
+          },
+          props$: props$.asObservable(),
+          getProp: createGetProp(props$),
+          getProps: createGetProps(props$),
+        };
+        const stateProps$ = controller(propsHelper);
         if (!stateProps$.subscribe) {
           throw new Error('controller should return an observable');
         }
@@ -68,43 +76,6 @@ export function connect<Props, StateProps>(
         if (this.subscription) {
           this.subscription.unsubscribe();
         }
-      }
-
-      /**
-       * Observable with prop by key
-       */
-      public getProp<K extends keyof Props>(key: K): Observable<Props[K]> {
-        return this.props$.pipe(
-          map(props => props[key]),
-          distinctUntilChanged()
-        );
-      }
-
-      /**
-       * Observable with props by keys
-       */
-      public getProps<Keys extends Array<keyof Props>>(
-        ...keys: Keys
-      ): Observable<
-        {
-          [Key in keyof Keys]: Keys[Key] extends keyof Props
-            ? Props[Keys[Key]]
-            : never;
-        }
-      > {
-        const r = this.props$.pipe(
-          distinctUntilChanged((p, q) => {
-            for (let i = 0, l = keys.length; i < l; i += 1) {
-              const name = keys[i];
-              if (p[name] !== q[name]) {
-                return false;
-              }
-            }
-            return true;
-          }),
-          map(props => keys.map(key => props[key]))
-        );
-        return r as any;
       }
 
       public render() {
