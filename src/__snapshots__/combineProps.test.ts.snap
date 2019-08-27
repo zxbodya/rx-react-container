@@ -1,14 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`combineProps ignores $ suffix 1`] = `
-Array [
-  Object {
-    "a": [Function],
-    "b": 1,
-  },
-]
-`;
-
 exports[`combineProps works correctly for empty arguments 1`] = `
 Array [
   Object {},

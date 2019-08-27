@@ -1,9 +1,14 @@
 # Changelog
 
+## 0.8.0 (2019-08-27)
+
+- better type coverage
+- *breaking* removed `combineProps` feature automatically removing `$` at end of variable, in exchange - now result type is correctly inferred from argument types
+
 ## 0.7.0 (2018-01-28)
 
 - TypeScript
-- remove deprecated `createContainer`
+- *breaking* remove deprecated `createContainer`
 
 ## 0.6.2 (2018-09-04)
 

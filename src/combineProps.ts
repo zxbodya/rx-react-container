@@ -3,24 +3,41 @@ import { map } from 'rxjs/operators';
 
 import { combineLatestObj } from './combineLatestObj';
 
+type AnyObservablesObject = { [k: string]: Observable<any> };
+type AnyObserversObject = { [k: string]: Observer<any> };
+
 /**
  * Creates observable combining values from observables, observers(as callbacks) and plain object
  * resulting in Observable of properties to be rendered with react component.
- *
- * @param {Object.<string, Observable>} observables=
- * @param {Object.<string, Observer>} observers=
- * @param {Object} props=
  */
-export function combineProps(
-  observables?: { [k: string]: Observable<any> },
-  observers?: { [k: string]: Observer<any> },
-  props?: { [k: string]: any }
-) {
-  const baseProps = Object.assign({}, props);
+export function combineProps<
+  ObservablesObject extends AnyObservablesObject,
+  ObserversObject extends AnyObserversObject,
+  OtherProps extends {}
+>(
+  observables?: ObservablesObject,
+  observers?: ObserversObject,
+  props?: OtherProps
+): Observable<
+  OtherProps &
+    {
+      [k in keyof ObservablesObject]: ObservablesObject[k] extends Observable<
+        infer V
+      >
+        ? V
+        : never;
+    } &
+    {
+      [k in keyof ObserversObject]: ObserversObject[k] extends Observer<infer V>
+        ? (value: V) => void
+        : never;
+    }
+> {
+  const baseProps: any = Object.assign({}, props);
 
   if (observers) {
     Object.keys(observers).forEach(key => {
-      baseProps[key.replace(/\$$/, '')] = (value: any) => {
+      baseProps[key] = (value: any) => {
         observers[key].next(value);
       };
     });

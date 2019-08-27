@@ -66,33 +66,12 @@ describe('combineProps', () => {
       });
   });
 
-  it('ignores $ suffix', done => {
-    const a$ = new BehaviorSubject(0);
-    combineProps(
-      {
-        b$: of(1),
-      },
-      {
-        a$,
-      },
-      {}
-    )
-      .pipe(toArray())
-      .subscribe(v => {
-        expect(v).toMatchSnapshot();
-        v[0].a(123);
-        expect(a$.value).toBe(123);
-        expect(v[0].b).toBe(1);
-        done();
-      });
-  });
-
   it('works for complete sample', done => {
     const b$ = new BehaviorSubject(0);
     combineProps(
       {
-        a$: of(1),
-        b$,
+        a: of(1),
+        b: b$,
       },
       {
         onB: b$,

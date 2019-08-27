@@ -8,8 +8,8 @@ import { map, scan, startWith, switchMap } from 'rxjs/operators';
 import { combineProps, connect, RxReactContainer } from '.';
 
 interface AppProps {
-  onMinus: () => void;
-  onPlus: () => void;
+  onMinus: (event: any) => void;
+  onPlus: (event: any) => void;
   totalCount: number;
   title: string;
 }
@@ -38,7 +38,9 @@ interface ContainerProps {
   heading: string;
 }
 
-function sampleController(container: RxReactContainer<ContainerProps>) {
+function sampleController(
+  container: RxReactContainer<ContainerProps>
+): Observable<AppProps> {
   const onMinus$ = new Subject();
   const onPlus$ = new Subject();
 
@@ -57,9 +59,9 @@ function sampleController(container: RxReactContainer<ContainerProps>) {
     .pipe(map(([step, heading]) => `${heading} - ${step}`));
 
   return combineProps(
-    { totalCount$, title$ },
-    { onMinus$, onPlus$ }
-  ) as Observable<AppProps>;
+    { totalCount: totalCount$, title: title$ },
+    { onMinus: onMinus$, onPlus: onPlus$ }
+  );
 }
 
 const AppContainer = connect<ContainerProps, AppProps>(sampleController)(App);

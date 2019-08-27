@@ -5,10 +5,14 @@ import { ComponentType } from 'react';
 import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 import { distinctUntilChanged, first, map, share } from 'rxjs/operators';
 
-export interface RxReactContainer<Props = {}> extends React.Component<Props> {
+export interface RxReactContainer<Props> extends React.Component<Props> {
   props$: Observable<Props>;
-  getProp: (key: string) => Observable<any>;
-  getProps: (...keys: string[]) => Observable<any[]>;
+  getProp<K extends keyof Props>(key: K): Observable<Props[K]>;
+  getProps<K extends Array<keyof Props>>(
+    ...keys: K
+  ): Observable<
+    { [Ki in keyof K]: K[Ki] extends keyof Props ? Props[K[Ki]] : never }
+  >;
 }
 /**
  * @param controller
@@ -68,41 +72,39 @@ export function connect<Props, StateProps>(
 
       /**
        * Observable with prop by key
-       * @param key
        */
-      public getProp(key: string) {
+      public getProp<K extends keyof Props>(key: K): Observable<Props[K]> {
         return this.props$.pipe(
-          map(
-            // @ts-ignore
-            props => props[key]
-          ),
+          map(props => props[key]),
           distinctUntilChanged()
         );
       }
 
       /**
        * Observable with props by keys
-       * @param keys
        */
-      public getProps(...keys: string[]) {
-        return this.props$.pipe(
+      public getProps<Keys extends Array<keyof Props>>(
+        ...keys: Keys
+      ): Observable<
+        {
+          [Key in keyof Keys]: Keys[Key] extends keyof Props
+            ? Props[Keys[Key]]
+            : never;
+        }
+      > {
+        const r = this.props$.pipe(
           distinctUntilChanged((p, q) => {
             for (let i = 0, l = keys.length; i < l; i += 1) {
               const name = keys[i];
-              // @ts-ignore
               if (p[name] !== q[name]) {
                 return false;
               }
             }
             return true;
           }),
-          map(props =>
-            keys.map(
-              // @ts-ignore
-              key => props[key]
-            )
-          )
+          map(props => keys.map(key => props[key]))
         );
+        return r as any;
       }
 
       public render() {
