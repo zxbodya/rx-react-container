@@ -112,7 +112,6 @@ test('connect to throw if no observable returned', () => {
 });
 
 test('connect - displayName', () => {
-  // eslint-disable-next-line prefer-arrow-callback
   const Cmp1 = connect(() => of({}))(function Name1() {
     return null;
   });
@@ -121,7 +120,6 @@ test('connect - displayName', () => {
   const NODE_ENV = process.env.NODE_ENV;
   process.env.NODE_ENV = 'production';
 
-  // eslint-disable-next-line prefer-arrow-callback
   const Cmp2 = connect(() => of({}))(function Name2() {
     return null;
   });
@@ -131,7 +129,6 @@ test('connect - displayName', () => {
 });
 
 test('connect - keep component statics', () => {
-  // eslint-disable-next-line prefer-arrow-callback
   // @ts-ignore
   expect(AppContainer.navStatic).toEqual({ header: 'ok' });
 });

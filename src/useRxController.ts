@@ -1,5 +1,3 @@
-// @ts-ignore
-
 import * as React from 'react';
 import { useEffect } from 'react';
 import { BehaviorSubject, Observable, Subscription } from 'rxjs';

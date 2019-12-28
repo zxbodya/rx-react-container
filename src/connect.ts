@@ -1,4 +1,3 @@
-// @ts-ignore
 import hoistStatics from 'hoist-non-react-statics';
 import * as React from 'react';
 import { ComponentType } from 'react';
@@ -83,12 +82,12 @@ export function connect<Props, StateProps>(
           this.state.props && React.createElement(Component, this.state.props)
         );
       }
+      static displayName: string;
     }
 
     if (process.env.NODE_ENV !== 'production') {
       const name = Component.displayName || Component.name;
       if (name) {
-        // @ts-ignore
         Container.displayName = `connect(${name})`;
       }
     }

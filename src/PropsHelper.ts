@@ -1,5 +1,3 @@
-// @ts-ignore
-
 import { Observable } from 'rxjs';
 import { distinctUntilChanged, map } from 'rxjs/operators';
 
