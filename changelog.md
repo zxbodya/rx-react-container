@@ -1,9 +1,13 @@
 # Changelog
 
+## 0.10.0 (2022-09-08)
+
+- upgrade react to version 17, and rxjs to version 7
+
 ## 0.9.0 (2019-08-28)
 
 - `useRxContainer` hook, as alternative to `connect` function
-- *breaking* restricting what can be accessed from `controller`, limiting it to only `props` (instead of wrapper component instance) 
+- *breaking* restricting what can be accessed from `controller`, limiting it to only `props` (instead of wrapper component instance)
 
 ## 0.8.0 (2019-08-27)
 

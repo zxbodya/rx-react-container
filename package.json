@@ -1,6 +1,6 @@
 {
   "name": "rx-react-container",
-  "version": "0.9.0",
+  "version": "0.10.0",
   "author": "Bogdan Savluk <savluk.bogdan@gmail.com>",
   "description": "Provides HoC component, and utilities to connect RxJS logic to React Component.",
   "keywords": [
