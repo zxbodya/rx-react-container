@@ -79,6 +79,7 @@ export function connect<Props, StateProps>(
 
       public render() {
         return (
+          // @ts-expect-error
           this.state.props && React.createElement(Component, this.state.props)
         );
       }

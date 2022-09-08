@@ -61,7 +61,7 @@ export function useRxController<Props, StateProps>(
     if (internalState.props$) {
       internalState.props$.next(props);
     }
-  }, Object.values(props));
+  }, Object.values(props as any));
 
   return state;
 }

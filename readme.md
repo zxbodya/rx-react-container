@@ -75,9 +75,8 @@ import React from 'react';
 import { render } from 'react-dom';
 
 import { Subject, merge } from 'rxjs';
-import { connect, combineProps } from 'rx-react-container';
+import { connect, combineProps, useRxController } from 'rx-react-container';
 import { map, scan, switchMap, startWith } from 'rxjs/operators';
-import {useRxController} from './useRxController';
 
 function App({ onMinus, onPlus, totalCount, step }) {
   return (
